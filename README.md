@@ -22,7 +22,7 @@ Detects the parking space in real time. User friendly application shows real tim
 *Team ID – T024*
 
 
-- *Balasubramaniyan S*-Team Leader
+- *Balasubramaniyan S*-Team Leader,Backend
 - *Anbu V*-Backend
 - *Janani J*- Frontend
 - *Johan Manova*- Open CV, YOLOv8
