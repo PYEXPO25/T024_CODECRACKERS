@@ -23,11 +23,11 @@ Detects the parking space in real time. User friendly application shows real tim
 
 
 - *Balasubramaniyan S*-Team Leader
-- *Anbu V*-Role
-- *Janani J*- Role
-- *Johan Manova*- Role
-- *Karthikeyan S N* - Role
-- *Marooshini S*- Role
+- *Anbu V*-Backend
+- *Janani J*- Frontend
+- *Johan Manova*- Open CV, YOLOv8
+- *Karthikeyan S N* - Open CV, YOLOv8
+- *Marooshini S*- Frontend
 
 ![Team Photo](media/IMG20250219164412.jpg)
 
