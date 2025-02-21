@@ -10,24 +10,21 @@ app.config['MYSQL_PASSWORD']= "Kgkite@123"
 app.secret_key="myapp"
 conn = MySQL(app)
 
+
 @app.route('/')
+def start():
+    return render_template(start)
+
+
+@app.route('/home')
 def home():
     return render_template ('home.html')
 
+
 @app.route('/data')
 def data():
-    if request.method=="POST":
-        name=request.form['name']
-        email=request.form['email']
-        msg=request.form['message']
-        con=conn.connection.cursor()
-        query="inert into message(name,email,mess) values(%s,%s,%s)"
-        res=con.execute(query,(name,email,msg))
-        con.connection.commit()
-        co.close()
     
-    
-    return redirect(url_for('/'))
+
 
 @app.route('/login')
 def login():
@@ -37,6 +34,7 @@ def login():
 @app.route('/details')
 def detail():
     return "details"
+
 
 @app.route('/booking')
 def book():
