@@ -21,7 +21,7 @@ def data():
     con.execute(query)
     result=con.fetchall()
     con.connection.commit()
-    return render_template()
+    return render_template('add.html',data=result)
         
     
 if __name__=='__main__':
