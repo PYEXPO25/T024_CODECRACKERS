@@ -92,24 +92,24 @@
 
 
      Contact us
-    <form class="bg-white p-4 rounded-lg shadow-lg">
+    <form class="bg-white p-4 rounded-lg shadow-lg" action={{ url_for( 'data' )}} method="POST">
      <div class="mb-4">
       <label class="block text-black-700 mb-2" for="name">
        Name
       </label>
-      <input class="w-full p-2 border border-blue-300 rounded" id="name" type="text"/>
+      <input class="w-full p-2 border border-blue-300 rounded" name="name" id="name" type="text"/>
      </div>
      <div class="mb-4">
       <label class="block text-black-700 mb-2" for="email">
        Email
       </label>
-      <input class="w-full p-2 border border-blue-300 rounded" id="email" type="email"/>
+      <input class="w-full p-2 border border-blue-300 rounded" name="email" id="email" type="email"/>
      </div>
      <div class="mb-4">
       <label class="block text-black-700 mb-2" for="message">
        Message
       </label>
-      <textarea class="w-full p-2 border border-blue-300 rounded" id="message"></textarea>
+      <textarea class="w-full p-2 border border-blue-300 rounded" name="message" id="message"></textarea>
      </div>
      <button class="bg-blue-600 text-white px-4 py-2 rounded" type="submit">
       Send Message
