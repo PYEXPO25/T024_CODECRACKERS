@@ -24,13 +24,21 @@ def data():
         query="inert into message(name,email,mess) values(%s,%s,%s)"
         res=con.execute(query,(name,email,msg))
         con.connection.commit()
-        co.close()
+        con.close()
     
-    
-    return redirect(url_for('/'))
+     return redirect(url_for('/'))
 
 @app.route('/login')
 def login():
+    if request.method=="POST":
+        username=request.form['name']
+        password=request.form['pass']
+        con=conn.connection.cursor()
+        query="insert into login(username,password) values(%s,%s)"
+        res=con.execute(query,(username,password))
+        con.connection.commit()
+        con.close()
+
     return render_template("login.html")
 
 
