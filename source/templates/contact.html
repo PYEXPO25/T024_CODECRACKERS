@@ -4,94 +4,106 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us</title>
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
         body {
+            font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: black;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            color: white;
+            background: url("telephone-mail-icon-button-on-600nw-1120866332.webp") no-repeat center center fixed;
+            background-size: cover;
         }
         .container {
-            width: 90%;
-            max-width: 400px;
-            background: rgba(30, 30, 30, 0.9);
+            background: rgba(255, 255, 255, 0.8);
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-            text-align: center;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            width: 300px;
         }
-        input, textarea {
+        label {
+            font-weight: bold;
+        }
+        .input-field, .textarea-field {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #555;
-            border-radius: 5px;
-            background: #222;
-            color: white;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
-        button {
-            padding: 12px 24px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
+        .button {
             background-color: #007bff;
             color: white;
-            transition: 0.3s;
+            border: none;
+            padding: 10px;
             width: 100%;
+            cursor: pointer;
+            border-radius: 4px;
         }
-        button:hover {
+        .button:hover {
             background-color: #0056b3;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
         }
     </style>
 </head>
 <body>
-
     <div class="container">
         <h2>Contact Us</h2>
         <form id="contactForm">
-            <input type="text" id="name" placeholder="Your Name" required>
-            <input type="email" id="email" placeholder="Your Email" required>
-            <textarea id="message" placeholder="Your Message" rows="4" required></textarea>
-            <button type="submit">Send Message</button>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" class="input-field" required>
+            <p id="nameError" class="error"></p>
+            
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" class="input-field" required>
+            <p id="emailError" class="error"></p>
+            
+            <label for="message">Message</label>
+            <textarea id="message" name="message" class="textarea-field" required></textarea>
+            <p id="messageError" class="error"></p>
+            
+            <button type="submit" class="button">Send</button>
         </form>
     </div>
-
+    
     <script>
-        emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS Public Key
-
-        document.getElementById('contactForm').addEventListener('submit', function(event) {
+        document.getElementById("contactForm").addEventListener("submit", function(event) {
             event.preventDefault();
-
-            let name = document.getElementById('name').value;
-            let email = document.getElementById('email').value;
-            let message = document.getElementById('message').value;
-
-            if (name === '' || email === '' || message === '') {
-                alert('Please fill all fields');
-                return;
+            let name = document.getElementById("name").value;
+            let email = document.getElementById("email").value;
+            let message = document.getElementById("message").value;
+            let nameError = document.getElementById("nameError");
+            let emailError = document.getElementById("emailError");
+            let messageError = document.getElementById("messageError");
+            
+            nameError.textContent = "";
+            emailError.textContent = "";
+            messageError.textContent = "";
+            
+            let valid = true;
+            
+            if (name.trim() === "") {
+                nameError.textContent = "Name cannot be empty";
+                valid = false;
             }
-
-            let params = {
-                from_name: name,
-                from_email: email,
-                message: message
-            };
-
-            emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", params)
-            .then(function(response) {
-                alert('Message sent successfully!');
-                document.getElementById('contactForm').reset();
-            }, function(error) {
-                alert('Failed to send message. Try again later.');
-            });
+            if (!email.includes("@")) {
+                emailError.textContent = "Enter a valid email";
+                valid = false;
+            }
+            if (message.trim() === "") {
+                messageError.textContent = "Message cannot be empty";
+                valid = false;
+            }
+            
+            if (valid) {
+                alert("Form submitted successfully!");
+                document.getElementById("contactForm").reset();
+            }
         });
     </script>
-
 </body>
 </html>
