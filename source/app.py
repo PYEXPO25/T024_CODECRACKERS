@@ -10,9 +10,16 @@ app.config['MYSQL_PASSWORD']= "Kgkite@123"
 app.secret_key="myapp"
 conn = MySQL(app)
 
+
 @app.route('/')
+def start():
+    return render_template("front page.html")
+
+
+@app.route('/home')
 def home():
     return render_template ('home.html')
+
 
 @app.route('/data')
 def data():
@@ -27,6 +34,8 @@ def data():
         con.close()
     
      return redirect(url_for('/'))
+    return "hi"
+
 
 @app.route('/login')
 def login():
@@ -45,6 +54,7 @@ def login():
 @app.route('/details')
 def detail():
     return "details"
+
 
 @app.route('/booking')
 def book():
