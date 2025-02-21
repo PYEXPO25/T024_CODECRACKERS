@@ -14,15 +14,19 @@ conn = MySQL(app)
 def home():
     return render_template ('home.html')
 
-@app.route('/data', methods=['POST','GET'])
-def data():
-    con=conn.connection.cursor(MySQLdb.cursors.DictCursor)
-    query="SELECT * FROM user"
-    con.execute(query)
-    result=con.fetchall()
-    con.connection.commit()
-    return render_template('add.html',data=result)
-        
-    
+@app.route('/login')
+def login():
+    return "login"
+
+
+@app.route('/details')
+def detail():
+    return "details"
+
+@app.route('/booking')
+def book():
+    return "booking"
+
+
 if __name__=='__main__':
     app.run(debug=True)
