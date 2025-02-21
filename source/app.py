@@ -14,9 +14,24 @@ conn = MySQL(app)
 def home():
     return render_template ('home.html')
 
+@app.route('/data')
+def data():
+    if request.method=="POST":
+        name=request.form['name']
+        email=request.form['email']
+        msg=request.form['message']
+        con=conn.connection.cursor()
+        query="inert into message(name,email,mess) values(%s,%s,%s)"
+        res=con.execute(query,(name,email,msg))
+        con.connection.commit()
+        co.close()
+    
+    
+    return redirect(url_for('/'))
+
 @app.route('/login')
 def login():
-    return "login"
+    return render_template("login.html")
 
 
 @app.route('/details')
