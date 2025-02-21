@@ -26,7 +26,7 @@ def contact():
     return render_template("contact.html")
 
 
-@app.route('/data')
+@app.route('/data',methods=['POST'])
 def data():
     if request.method== 'POST':
         name=request.form['name']
@@ -37,14 +37,15 @@ def data():
         res=con.execute(query,(name,email,mess))
         con.connection.commit()
         con.close()
-        
-    return redirect(url_for('home'))
+        return redirect(url_for('home'))
+    
+    return render_template("contact.html")
 
 
 
 @app.route('/login')
 def login():
-    return render_template("login.html")
+    return render_template("sign up.html")
 
 
 @app.route('/signup')
@@ -53,7 +54,7 @@ def signup():
         username=request.form['name']
         password=request.form['pass']
         con=conn.connection.cursor()
-        query="select * from login where user_name=username and password=password"
+        query="SELECT * FROM login user_name= %s AND password= %s"
         res=con.execute(query,(username,password))
         con.connection.commit()
         con.close()
@@ -65,7 +66,7 @@ def logindata():
         username=request.form['name']
         password=request.form['pass']
         con=conn.connection.cursor()
-        query="insert into login(username,password) values(%s,%s)"
+        query="INSERT INTO login(username,password) VALUES (%s,%s)"
         res=con.execute(query,(username,password))
         con.connection.commit()
         con.close()
