@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Entry & Exit Tracker</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Car Entry & Exit Tracker</h2>
+
+    <label for="carNumber">Car Number:</label>
+    <input type="text" id="carNumber" placeholder="Enter car number">
+    <button onclick="registerEntry()">Entry</button>
+    <button onclick="registerExit()">Exit</button>
+
+    <label for="searchBox">Search:</label>
+    <input type="text" id="searchBox" onkeyup="searchCar()" placeholder="Search by car number">
+
+    <h3>Car Logs</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Car Number</th>
+                <th>Entry Time</th>
+                <th>Exit Time</th>
+            </tr>
+        </thead>
+        <tbody id="logTableBody">
+        </tbody>
+    </table>
+
+    <script>
+        let carLogs = {}; 
+
+        // Function to register entry time
+        function registerEntry() {
+            let carNumber = document.getElementById('carNumber').value;
+            if (carNumber === '') {
+                alert('Please enter a car number');
+                return;
+            }
+
+            let currentTime = new Date().toLocaleString();
+            carLogs[carNumber] = { entry: currentTime, exit: '' }; 
+            updateTable();
+        }
+
+        // Function to register exit time
+        function registerExit() {
+            let carNumber = document.getElementById('carNumber').value;
+            if (carNumber === '' || !carLogs[carNumber]) {
+                alert('No entry found for this car');
+                return;
+            }
+
+            carLogs[carNumber].exit = new Date().toLocaleString();
+            updateTable();
+        }
+
+        // Function to update the table with car details
+        function updateTable() {
+            let tableBody = document.getElementById('logTableBody');
+            tableBody.innerHTML = '';
+
+            for (let car in carLogs) {
+                let row = `<tr>
+                    <td>${car}</td>
+                    <td>${carLogs[car].entry}</td>
+                    <td>${carLogs[car].exit}</td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            }
+        }
+
+        // Function to search car details
+        function searchCar() {
+            let filter = document.getElementById('searchBox').value.toLowerCase();
+            let tableBody = document.getElementById('logTableBody');
+            tableBody.innerHTML = '';
+
+            for (let car in carLogs) {
+                if (car.toLowerCase().includes(filter)) {
+                    let row = `<tr>
+                        <td>${car}</td>
+                        <td>${carLogs[car].entry}</td>
+                        <td>${carLogs[car].exit}</td>
+                    </tr>`;
+                    tableBody.innerHTML += row;
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
