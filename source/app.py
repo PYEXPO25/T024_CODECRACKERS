@@ -28,17 +28,17 @@ def contact():
 
 @app.route('/data')
 def data():
-    if request.method==['POST']:
+    if request.method== 'POST':
         name=request.form['name']
         email=request.form['email']
         mess=request.form['mess']
         con=conn.connection.cursor()
-        query="inert into message(name,email,mess) values(%s,%s,%s)"
+        query="INSERT INTO message(name,email,mess) VALUES (%s,%s,%s)"
         res=con.execute(query,(name,email,mess))
         con.connection.commit()
         con.close()
         
-    return redirect(url_for('/'))
+    return redirect(url_for('home'))
 
 
 
@@ -76,17 +76,14 @@ def logindata():
 
 @app.route('/details')
 def detail():
-    return "details"
+    return render_template("details.html")
 
 
 @app.route('/booking')
 def book():
-    return "booking"
+    return render_template("booking page.html")
 
 
-@app.route('/contact')
-def contact():
-    return render_template("contact.html")
 
 if __name__=='__main__':
     app.run(debug=True)
