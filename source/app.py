@@ -13,7 +13,7 @@ conn = MySQL(app)
 
 @app.route('/')
 def start():
-    return render_template(start)
+    return render_template("front page.html")
 
 
 @app.route('/home')
@@ -23,7 +23,7 @@ def home():
 
 @app.route('/data')
 def data():
-    
+    return "hi"
 
 
 @app.route('/login')
