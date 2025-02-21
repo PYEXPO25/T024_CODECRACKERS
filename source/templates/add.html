@@ -9,7 +9,16 @@
     {% for i in data %}
     <tr>
         <td>
-            {{i}}
+            {{i['name']}}
+        </td>
+        <td>
+            {{i['age']}}
+        </td>
+        <td>
+            {{i['place']}}
+        </td>
+        <td>
+            {{i['rollno']}}
         </td>
     </tr>
     {% endfor %}
