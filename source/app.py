@@ -23,11 +23,31 @@ def home():
 
 @app.route('/data')
 def data():
+    if request.method=="POST":
+        name=request.form['name']
+        email=request.form['email']
+        msg=request.form['message']
+        con=conn.connection.cursor()
+        query="inert into message(name,email,mess) values(%s,%s,%s)"
+        res=con.execute(query,(name,email,msg))
+        con.connection.commit()
+        con.close()
+    
+     return redirect(url_for('/'))
     return "hi"
 
 
 @app.route('/login')
 def login():
+    if request.method=="POST":
+        username=request.form['name']
+        password=request.form['pass']
+        con=conn.connection.cursor()
+        query="insert into login(username,password) values(%s,%s)"
+        res=con.execute(query,(username,password))
+        con.connection.commit()
+        con.close()
+
     return render_template("login.html")
 
 
