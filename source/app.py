@@ -21,25 +21,47 @@ def home():
     return render_template ('home.html')
 
 
+@app.route('/contact')
+def contact():
+    return render_template("contact.html")
+
+
 @app.route('/data')
 def data():
-    if request.method=="POST":
+    if request.method==['POST']:
         name=request.form['name']
         email=request.form['email']
-        msg=request.form['message']
+        mess=request.form['mess']
         con=conn.connection.cursor()
         query="inert into message(name,email,mess) values(%s,%s,%s)"
-        res=con.execute(query,(name,email,msg))
+        res=con.execute(query,(name,email,mess))
         con.connection.commit()
         con.close()
-    
-     return redirect(url_for('/'))
-    return "hi"
+        
+    return redirect(url_for('/'))
+
 
 
 @app.route('/login')
 def login():
-    if request.method=="POST":
+    return render_template("login.html")
+
+
+@app.route('/signup')
+def signup():
+    if request.method==['GET', 'POST']:
+        username=request.form['name']
+        password=request.form['pass']
+        con=conn.connection.cursor()
+        query="select * from login where user_name=username and password=password"
+        res=con.execute(query,(username,password))
+        con.connection.commit()
+        con.close()
+
+
+@app.route('/logindata')
+def logindata():
+    if request.method==['GET', 'POST']:
         username=request.form['name']
         password=request.form['pass']
         con=conn.connection.cursor()
@@ -47,8 +69,9 @@ def login():
         res=con.execute(query,(username,password))
         con.connection.commit()
         con.close()
-
-    return render_template("login.html")
+        
+        
+    return redirect("home.html")
 
 
 @app.route('/details')
@@ -60,6 +83,10 @@ def detail():
 def book():
     return "booking"
 
+
+@app.route('/contact')
+def contact():
+    return render_template("contact.html")
 
 if __name__=='__main__':
     app.run(debug=True)
