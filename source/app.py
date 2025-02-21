@@ -37,8 +37,9 @@ def data():
         res=con.execute(query,(name,email,mess))
         con.connection.commit()
         con.close()
-    
-    return redirect(url_for('home'))
+        
+    return redirect(url_for('/'))
+
 
 
 @app.route('/login')
@@ -82,6 +83,10 @@ def detail():
 def book():
     return "booking"
 
+
+@app.route('/contact')
+def contact():
+    return render_template("contact.html")
 
 if __name__=='__main__':
     app.run(debug=True)

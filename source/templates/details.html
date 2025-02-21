@@ -5,47 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Car Entry & Exit Tracker</title>
     <style>
+        body {
+            background: url("") no-repeat center center/cover;
+            background-size: cover;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
+            background: rgba(255, 255, 255, 0.8); /* Light background for readability */
         }
         th, td {
             border: 1px solid black;
             padding: 8px;
             text-align: center;
         }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 
-    <h2>Car Entry & Exit Tracker</h2>
+    <div class="container">
+        <h2>Car Entry & Exit Tracker</h2>
 
-    <label for="carNumber">Car Number:</label>
-    <input type="text" id="carNumber" placeholder="Enter car number">
-    <button onclick="registerEntry()">Entry</button>
-    <button onclick="registerExit()">Exit</button>
+        <label for="carNumber">Car Number:</label>
+        <input type="text" id="carNumber" placeholder="Enter car number">
+        <button onclick="registerEntry()">Entry</button>
+        <button onclick="registerExit()">Exit</button>
 
-    <label for="searchBox">Search:</label>
-    <input type="text" id="searchBox" onkeyup="searchCar()" placeholder="Search by car number">
+        <label for="searchBox">Search:</label>
+        <input type="text" id="searchBox" onkeyup="searchCar()" placeholder="Search by car number">
 
-    <h3>Car Logs</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Car Number</th>
-                <th>Entry Time</th>
-                <th>Exit Time</th>
-            </tr>
-        </thead>
-        <tbody id="logTableBody">
-        </tbody>
-    </table>
+        <h3>Car Logs</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Car Number</th>
+                    <th>Entry Time</th>
+                    <th>Exit Time</th>
+                </tr>
+            </thead>
+            <tbody id="logTableBody">
+            </tbody>
+        </table>
+    </div>
 
     <script>
         let carLogs = {}; 
 
-        // Function to register entry time
         function registerEntry() {
             let carNumber = document.getElementById('carNumber').value;
             if (carNumber === '') {
@@ -58,7 +76,6 @@
             updateTable();
         }
 
-        // Function to register exit time
         function registerExit() {
             let carNumber = document.getElementById('carNumber').value;
             if (carNumber === '' || !carLogs[carNumber]) {
@@ -70,7 +87,6 @@
             updateTable();
         }
 
-        // Function to update the table with car details
         function updateTable() {
             let tableBody = document.getElementById('logTableBody');
             tableBody.innerHTML = '';
@@ -85,7 +101,6 @@
             }
         }
 
-        // Function to search car details
         function searchCar() {
             let filter = document.getElementById('searchBox').value.toLowerCase();
             let tableBody = document.getElementById('logTableBody');
