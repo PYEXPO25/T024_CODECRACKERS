@@ -37,6 +37,7 @@ def data():
         res=con.execute(query,(name,email,message))
         conn.connection.commit()
         conn.connection.close()
+        
         return redirect(url_for('home'))
     
     return render_template("contact.html")
@@ -79,6 +80,7 @@ def signup():
         return redirect(url_for("home"))
     
     return redirect(url_for("home"))
+
 
 @app.route('/details')
 def details():
