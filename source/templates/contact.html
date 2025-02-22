@@ -51,47 +51,59 @@
     </style>
 </head>
 <body>
-
     <div class="container">
         <h2>Contact Us</h2>
-        <form id="contactForm" action={{url_for('data')}} method='POST'>
-            <input type="text" name="name" id="name" placeholder="Your Name" required>
-            <input type="email" name="email" id="email" placeholder="Your Email" required>
-            <textarea id="message" name="mess" placeholder="Your Message" rows="4" required></textarea>
-            <button type="submit">Send Message</button>
+        <form action="{{url_for('data')}}" method='POST'>
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name"  class="input-field" required>
+            <p id="nameError" class="error"></p>
+            
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" class="input-field" required>
+            <p id="emailError" class="error"></p>
+            
+            <label for="message">Message</label>
+            <textarea name="message" id="message"  class="textarea-field" required></textarea>
+            <p id="messageError" class="error"></p>
+            
+            <button type="submit" class="button">Send</button>
         </form>
     </div>
-
+    
     <script>
-        emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS Public Key
-
-        document.getElementById('contactForm').addEventListener('submit', function(event) {
+        document.getElementById("contactForm").addEventListener("submit", function(event) {
             event.preventDefault();
-
-            let name = document.getElementById('name').value;
-            let email = document.getElementById('email').value;
-            let message = document.getElementById('message').value;
-
-            if (name === '' || email === '' || message === '') {
-                alert('Please fill all fields');
-                return;
+            let name = document.getElementById("name").value;
+            let email = document.getElementById("email").value;
+            let message = document.getElementById("message").value;
+            let nameError = document.getElementById("nameError");
+            let emailError = document.getElementById("emailError");
+            let messageError = document.getElementById("messageError");
+            
+            nameError.textContent = "";
+            emailError.textContent = "";
+            messageError.textContent = "";
+            
+            let valid = true;
+            
+            if (name.trim() === "") {
+                nameError.textContent = "Name cannot be empty";
+                valid = false;
             }
-
-            let params = {
-                from_name: name,
-                from_email: email,
-                message: message
-            };
-
-            emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", params)
-            .then(function(response) {
-                alert('Message sent successfully!');
-                document.getElementById('contactForm').reset();
-            }, function(error) {
-                alert('Failed to send message. Try again later.');
-            });
+            if (!email.includes("@")) {
+                emailError.textContent = "Enter a valid email";
+                valid = false;
+            }
+            if (message.trim() === "") {
+                messageError.textContent = "Message cannot be empty";
+                valid = false;
+            }
+            
+            if (valid) {
+                alert("Form submitted successfully!");
+                document.getElementById("contactForm").reset();
+            }
         });
     </script>
-
 </body>
 </html>

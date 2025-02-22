@@ -26,62 +26,68 @@ def contact():
     return render_template("contact.html")
 '''sangili mungili kathava thora naa poten vengala puli'''
 
-@app.route('/data')
+@app.route('/data',methods=['POST'])
 def data():
-    if request.method==['POST']:
+    if request.method== 'POST':
         name=request.form['name']
         email=request.form['email']
-        mess=request.form['mess']
+        message=request.form['message']
         con=conn.connection.cursor()
-        query="inert into message(name,email,mess) values(%s,%s,%s)"
-        res=con.execute(query,(name,email,mess))
-        con.connection.commit()
-        con.close()
-        
-    return redirect(url_for('/'))
+        query="INSERT INTO message(name,email,mess) VALUES (%s,%s,%s)"
+        res=con.execute(query,(name,email,message))
+        conn.connection.commit()
+        conn.connection.close()
+        return redirect(url_for('home'))
+    
+    return render_template("contact.html")
 
 
 
 @app.route('/login')
 def login():
-    return render_template("login.html")
+    return render_template("sign up.html")
 
 
-@app.route('/signup')
+@app.route('/signin',methods=['POST'])
+def signin():
+    if request.method==['GET', 'POST']:
+        username=request.form['username']
+        ph_no=request.form['phno']
+        password=request.form['password']
+        con=conn.connection.cursor()
+        query="SELECT * FROM login user_name= %s AND phno= %s password= %s"
+        res=con.execute(query,(username,ph_no,password))
+        conn.connection.commit()
+        
+        return redirect(url_for("details"))
+    
+    return redirect(url_for("details")) 
+        
+
+
+@app.route('/signup',methods=['POST'])
 def signup():
-    if request.method==['GET', 'POST']:
-        username=request.form['name']
-        password=request.form['pass']
+    if request.method== 'POST':
+        username = request.form['username']
+        ph_no=request.form['phno']
+        password = request.form['password']
         con=conn.connection.cursor()
-        query="select * from login where user_name=username and password=password"
-        res=con.execute(query,(username,password))
-        con.connection.commit()
-        con.close()
-
-
-@app.route('/logindata')
-def logindata():
-    if request.method==['GET', 'POST']:
-        username=request.form['name']
-        password=request.form['pass']
-        con=conn.connection.cursor()
-        query="insert into login(username,password) values(%s,%s)"
-        res=con.execute(query,(username,password))
-        con.connection.commit()
-        con.close()
+        query="INSERT INTO login(username,phno,password) VALUES (%s,%s,%s)"
+        res=con.execute(query,(username,ph_no,password))
+        conn.connection.commit()
         
-        
-    return redirect("home.html")
-
+        return redirect(url_for("home"))
+    
+    return redirect(url_for("home"))
 
 @app.route('/details')
-def detail():
-    return "details"
+def details():
+    return render_template("details.html")
 
 
 @app.route('/booking')
 def book():
-    return "booking"
+    return render_template("booking page.html")
 
 
 if __name__=='__main__':
