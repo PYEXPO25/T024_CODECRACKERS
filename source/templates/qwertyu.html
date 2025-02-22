@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Parking Space Booking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        let bookedSlots = [];
+        const totalSlots = 20;
+
+        function bookSlot() {
+            const carNumber = document.getElementById("carNumber").value;
+            const message = document.getElementById("message");
+            
+            if (!carNumber) {
+                message.innerText = "Please enter your car number to book a slot.";
+                message.style.color = "red";
+                return;
+            }
+
+            if (bookedSlots.length >= totalSlots) {
+                message.innerText = "All parking slots are booked!";
+                message.style.color = "red";
+                return;
+            }
+            
+            let slotNumber = "P" + (bookedSlots.length + 1);
+            bookedSlots.push({ carNumber, slotNumber });
+            message.innerText = `Slot ${slotNumber} booked successfully for car ${carNumber}.`;
+            message.style.color = "green";
+        }
+    </script>
+</head>
+<body class="font-roboto bg-gray-100">
+    <header class="bg-blue-600 text-white p-4 text-center">
+        <h1 class="text-2xl font-bold">Parking Space Booking</h1>
+    </header>
+    <main class="container mx-auto p-4 text-center">
+        <h2 class="text-2xl font-bold my-4">Book Your Parking Slot</h2>
+        <p class="text-gray-700">Enter your car number to reserve a parking slot.</p>
+        
+        <div class="mt-4">
+            <input id="carNumber" type="text" placeholder="Enter Car Number" class="border p-2 rounded-md"/>
+            <button onclick="bookSlot()" class="bg-blue-600 text-white px-4 py-2 rounded-md ml-2 hover:bg-blue-700">Book Now</button>
+        </div>
+        
+        <p id="message" class="mt-4 font-bold"></p>
+    </main>
+</body>
+</html>
