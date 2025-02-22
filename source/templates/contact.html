@@ -53,7 +53,7 @@
 <body>
     <div class="container">
         <h2>Contact Us</h2>
-        <form id="contactForm" action="{{url_for('data')}}" method='POST'>
+        <form action="{{url_for('data')}}" method='POST'>
             <label for="name">Name</label>
             <input type="text" name="name" id="name"  class="input-field" required>
             <p id="nameError" class="error"></p>
@@ -63,7 +63,7 @@
             <p id="emailError" class="error"></p>
             
             <label for="message">Message</label>
-            <textarea name="mess" id="message"  class="textarea-field" required></textarea>
+            <textarea name="message" id="message"  class="textarea-field" required></textarea>
             <p id="messageError" class="error"></p>
             
             <button type="submit" class="button">Send</button>
