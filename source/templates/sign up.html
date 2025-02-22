@@ -11,7 +11,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: url("11111111111111111111111.png") no-repeat center fixed;
+            background: url("static/11111111111111111111111.png") no-repeat center fixed;
             background-size: cover;
         }
         .container {
@@ -52,11 +52,14 @@
         <!-- Login Form -->
         <div id="loginForm">
             <h2>Login</h2>
-            <form action="/login" method="POST">
+            <form action="{{ url_for('signin') }}" method="POST">
                 <label for="login_username">Username:</label>
                 <input type="text" id="login_username" name="username" required>
 
-                <label for="login_password">Password:</label>
+                <label for="register_number">Mobile Number:</label>
+                <input type="tel" id="register_number" name="phno" required pattern="[0-9]{10}" placeholder="Enter 10-digit number">
+
+                <label for="login_password"> Password:</label>
                 <input type="password" id="login_password" name="password" required>
 
                 <button type="submit">Login</button>
@@ -67,9 +70,12 @@
         <!-- Registration Form (Initially Hidden) -->
         <div id="registerForm" style="display:none;">
             <h2>Sign Up</h2>
-            <form action="/register" method="POST">
+            <form action="{{ url_for('signup') }}" method="POST">
                 <label for="register_username">Username:</label>
                 <input type="text" id="register_username" name="username" required>
+
+                <label for="register_number">Mobile Number:</label>
+                <input type="tel" id="register_number" name="phno" required pattern="[0-9]{10}" placeholder="Enter 10-digit number">
 
                 <label for="register_password">Password:</label>
                 <input type="password" id="register_password" name="password" required>
