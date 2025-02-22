@@ -7,41 +7,19 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: url("pure-black-background-y8wp2r83b15xxdi6.jpg") no-repeat center center fixed;
-            background-size: cover;
             text-align: center;
         }
         .container {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
             width: 80%;
-            max-width: 800px;
+            max-width: 600px;
             margin: auto;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-        }
-        select, input, button {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 4px;
+            padding: 20px;
             border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
         }
-        button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .parking-section {
-            margin: 10px 0;
-        }
-        .section-title {
-            font-weight: bold;
-            margin: 10px 0;
+        .section {
+            margin-top: 20px;
         }
         .slots-container {
             display: grid;
@@ -50,23 +28,22 @@
             justify-content: center;
         }
         .slot {
-            width: 60px;
-            height: 60px;
-            background-color: #28a745;
+            width: 50px;
+            height: 50px;
+            background-color: green;
             color: white;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
+            text-align: center;
+            line-height: 50px;
             border-radius: 5px;
+            cursor: pointer;
         }
         .slot.booked {
-            background-color: #dc3545;
+            background-color: red;
             cursor: not-allowed;
         }
-        .slot.selected {
-            background-color: #ffc107;
+        .confirmation-image {
+            margin-top: 20px;
+            display: none;
         }
     </style>
 </head>
@@ -74,111 +51,94 @@
 
 <div class="container">
     <h2>Book Your Parking Slot</h2>
-    <label for="mall">Select Mall:</label>
-    <select id="mall" onchange="updateSlots()">
-        <option value="Prozone Mall">Prozone Mall</option>
-        <option value="Brookfields Mall">Brookfields Mall</option>
-        <option value="Fun Republic Mall">Fun Republic Mall</option>
-        <option value="Broadway Mall">Broadway Mall</option>
-    </select>
-
     <label for="carNumber">Car Number:</label>
     <input type="text" id="carNumber" placeholder="Enter Car Number" required>
-
-    <div id="parkingArea"></div>
-
-    <button type="button" onclick="confirmBooking()">Confirm Booking</button>
-    <button type="button" id="submitBtn" onclick="submitBooking()" style="display: none;">Submit</button>
+    <button onclick="prepareBooking()">Prepare Booking</button>
     
-    <p id="confirmationMessage" style="color: green; font-weight: bold; display: none;"></p>
-    <p id="submissionMessage" style="color: blue; font-weight: bold; display: none;"></p>
+    <div id="parkingSections"></div>
+    
+    <p id="message" style="color: green;"></p>
+    <img id="confirmationImage" class="confirmation-image" src="https://via.placeholder.com/100x100.png?text=Confirmed" alt="Booking Confirmed">
+    <button id="confirmBookingButton" style="display:none;" onclick="confirmBooking()">Confirm Booking</button>
 </div>
 
 <script>
-    let bookedSlots = {};
-    
-    ["Prozone Mall", "Brookfields Mall", "Fun Republic Mall", "Broadway Mall"].forEach(mall => {
-        bookedSlots[mall] = {};
-        for (let i = 1; i <= 20; i++) {
-            let section = "P" + i;
-            bookedSlots[mall][section] = Array(20).fill(false);
-        }
-    });
-
-    let selectedSlot = null;
-
-    function updateSlots() {
-        let mall = document.getElementById("mall").value;
-        let parkingArea = document.getElementById("parkingArea");
-        parkingArea.innerHTML = "";
-
-        for (let section in bookedSlots[mall]) {
-            let sectionDiv = document.createElement("div");
-            sectionDiv.classList.add("parking-section");
-
-            let sectionTitle = document.createElement("div");
-            sectionTitle.classList.add("section-title");
-            sectionTitle.innerText = `Section ${section}`;
-            sectionDiv.appendChild(sectionTitle);
-
-            let slotsContainer = document.createElement("div");
-            slotsContainer.classList.add("slots-container");
-
-            for (let i = 0; i < 20; i++) {
-                let slotId = section + "-" + (i + 1);
-                let slot = document.createElement("div");
-                slot.classList.add("slot");
-                slot.innerText = slotId;
-
-                if (bookedSlots[mall][section][i]) {
-                    slot.classList.add("booked");
-                } else {
-                    slot.onclick = function () {
-                        selectSlot(slotId, slot);
-                    };
-                }
-
-                slotsContainer.appendChild(slot);
-            }
-            sectionDiv.appendChild(slotsContainer);
-            parkingArea.appendChild(sectionDiv);
-        }
+    let parkingSections = {};
+    for (let i = 1; i <= 10; i++) {
+        parkingSections[`P${i}`] = Array(10).fill(false);
     }
 
-    function selectSlot(slotId, slotElement) {
-        if (selectedSlot) {
-            selectedSlot.classList.remove("selected");
+    let selectedSlot = null;
+    let selectedSection = null;
+
+    function renderSections() {
+        let parkingDiv = document.getElementById("parkingSections");
+        parkingDiv.innerHTML = "";
+        
+        Object.keys(parkingSections).forEach(section => {
+            let sectionDiv = document.createElement("div");
+            sectionDiv.classList.add("section");
+            sectionDiv.innerHTML = `<h3>${section} Slots</h3>`;
+            
+            let slotsContainer = document.createElement("div");
+            slotsContainer.classList.add("slots-container");
+            
+            parkingSections[section].forEach((booked, index) => {
+                let slot = document.createElement("div");
+                slot.classList.add("slot");
+                slot.innerText = `${section}-${index + 1}`;
+                if (booked) {
+                    slot.classList.add("booked");
+                } else {
+                    slot.setAttribute("onclick", `selectSlot('${section}', ${index})`);
+                }
+                slotsContainer.appendChild(slot);
+            });
+            
+            sectionDiv.appendChild(slotsContainer);
+            parkingDiv.appendChild(sectionDiv);
+        });
+    }
+
+    function selectSlot(section, index) {
+        if (parkingSections[section][index]) {
+            return;
         }
-        selectedSlot = slotElement;
-        selectedSlot.classList.add("selected");
+        selectedSlot = index;
+        selectedSection = section;
+        document.getElementById("confirmBookingButton").style.display = "inline-block";
+        document.getElementById("message").innerText = `You have selected Slot ${section}-${index + 1}. Please confirm your booking.`;
+    }
+
+    function prepareBooking() {
+        let carNumber = document.getElementById("carNumber").value;
+        if (!carNumber) {
+            alert("Please enter a car number!");
+            return;
+        }
+        alert("Slot selection is prepared. Now, confirm your booking.");
     }
 
     function confirmBooking() {
-        if (!selectedSlot) {
-            alert("Please select a slot!");
+        if (!selectedSlot && !selectedSection) {
+            alert("No slot selected!");
             return;
         }
-        let mall = document.getElementById("mall").value;
         let carNumber = document.getElementById("carNumber").value;
-        let [section, slotNum] = selectedSlot.innerText.split("-");
-        slotNum = parseInt(slotNum) - 1;
-
-        if (bookedSlots[mall][section][slotNum]) {
-            alert(`❌ Slot ${selectedSlot.innerText} at ${mall} is already booked!`);
-            return;
+        let confirmBooking = confirm(`Are you sure you want to book Slot ${selectedSection}-${selectedSlot + 1} for Car ${carNumber}?`);
+        if (confirmBooking) {
+            parkingSections[selectedSection][selectedSlot] = true;
+            document.getElementById("message").innerText = `✅ Slot ${selectedSection}-${selectedSlot + 1} booked for Car ${carNumber}`;
+            document.getElementById("confirmationImage").style.display = "block";
+            renderSections();
+            document.getElementById("confirmBookingButton").style.display = "none";
+            document.getElementById("carNumber").value = '';
+            selectedSlot = null;
+            selectedSection = null;
         }
-
-        bookedSlots[mall][section][slotNum] = true;
-        updateSlots();
-
-        document.getElementById("confirmationMessage").innerText =
-            `✅ Booking Confirmed! Slot ${selectedSlot.innerText} at ${mall} for Car ${carNumber}`;
-        document.getElementById("confirmationMessage").style.display = "block";
-
-        document.getElementById("submitBtn").style.display = "block";
     }
 
-    updateSlots();
+    renderSections();
 </script>
 
 </body>

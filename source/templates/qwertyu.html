@@ -1,51 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Parking Space Booking</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        let bookedSlots = [];
-        const totalSlots = 20;
-
-        function bookSlot() {
-            const carNumber = document.getElementById("carNumber").value;
-            const message = document.getElementById("message");
-            
-            if (!carNumber) {
-                message.innerText = "Please enter your car number to book a slot.";
-                message.style.color = "red";
-                return;
-            }
-
-            if (bookedSlots.length >= totalSlots) {
-                message.innerText = "All parking slots are booked!";
-                message.style.color = "red";
-                return;
-            }
-            
-            let slotNumber = "P" + (bookedSlots.length + 1);
-            bookedSlots.push({ carNumber, slotNumber });
-            message.innerText = `Slot ${slotNumber} booked successfully for car ${carNumber}.`;
-            message.style.color = "green";
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mall Car Parking Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
         }
-    </script>
+        .container {
+            width: 80%;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .section {
+            margin-top: 20px;
+        }
+        .slot {
+            width: 50px;
+            height: 50px;
+            display: inline-block;
+            margin: 5px;
+            background-color: green;
+            color: white;
+            text-align: center;
+            line-height: 50px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .slot.booked {
+            background-color: red;
+            cursor: not-allowed;
+        }
+        .confirmation-image {
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
 </head>
-<body class="font-roboto bg-gray-100">
-    <header class="bg-blue-600 text-white p-4 text-center">
-        <h1 class="text-2xl font-bold">Parking Space Booking</h1>
-    </header>
-    <main class="container mx-auto p-4 text-center">
-        <h2 class="text-2xl font-bold my-4">Book Your Parking Slot</h2>
-        <p class="text-gray-700">Enter your car number to reserve a parking slot.</p>
-        
-        <div class="mt-4">
-            <input id="carNumber" type="text" placeholder="Enter Car Number" class="border p-2 rounded-md"/>
-            <button onclick="bookSlot()" class="bg-blue-600 text-white px-4 py-2 rounded-md ml-2 hover:bg-blue-700">Book Now</button>
-        </div>
-        
-        <p id="message" class="mt-4 font-bold"></p>
-    </main>
+<body>
+
+<div class="container">
+    <h2>Book Your Parking Slot</h2>
+    <label for="carNumber">Car Number:</label>
+    <input type="text" id="carNumber" placeholder="Enter Car Number" required>
+    <button onclick="prepareBooking()">Auto-Book Slot</button>
+
+    <div class="section"><h3>P1 Slots (20 slots)</h3><div id="slotsP1"></div></div>
+    <div class="section"><h3>P2 Slots</h3><div id="slotsP2"></div></div>
+    <div class="section"><h3>P3 Slots</h3><div id="slotsP3"></div></div>
+    <div class="section"><h3>P4 Slots</h3><div id="slotsP4"></div></div>
+    <div class="section"><h3>P5 Slots</h3><div id="slotsP5"></div></div>
+    <div class="section"><h3>P6 Slots</h3><div id="slotsP6"></div></div>
+    <div class="section"><h3>P7 Slots</h3><div id="slotsP7"></div></div>
+    <div class="section"><h3>P8 Slots</h3><div id="slotsP8"></div></div>
+    <div class="section"><h3>P9 Slots</h3><div id="slotsP9"></div></div>
+    <div class="section"><h3>P10 Slots</h3><div id="slotsP10"></div></div>
+
+    <p id="message" style="color: green;"></p>
+    <img id="confirmationImage" class="confirmation-image" src="https://via.placeholder.com/100x100.png?text=Confirmed" alt="Booking Confirmed">
+</div>
+
+<script>
+    let parkingSections = {
+        P1: Array(20).fill(false),
+        P2: Array(20).fill(false),
+        P3: Array(20).fill(false),
+        P4: Array(20).fill(false),
+        P5: Array(20).fill(false),
+        P6: Array(20).fill(false),
+        P7: Array(20).fill(false),
+        P8: Array(20).fill(false),
+        P9: Array(20).fill(false),
+        P10: Array(20).fill(false),
+    };
+
+    function renderSlots(section) {
+        let slotsContainer = document.getElementById(`slots${section}`);
+        slotsContainer.innerHTML = "";
+
+        parkingSections[section].forEach((booked, index) => {
+            let slot = document.createElement("div");
+            slot.classList.add("slot");
+            slot.innerText = `${section}-${index + 1}`;
+            if (booked) {
+                slot.classList.add("booked");
+            } else {
+                slot.setAttribute("onclick", `selectSlot('${section}', ${index})`);
+            }
+            slotsContainer.appendChild(slot);
+        });
+    }
+
+    function selectSlot(section, index) {
+        if (parkingSections[section][index]) return;
+
+        let carNumber = document.getElementById("carNumber").value;
+        if (!carNumber) {
+            alert("Please enter a car number first!");
+            return;
+        }
+
+        parkingSections[section][index] = true;
+        document.getElementById("message").innerText = `✅ Slot ${section}-${index + 1} booked for Car ${carNumber}`;
+        document.getElementById("confirmationImage").style.display = "block";
+        renderSlots(section);
+    }
+
+    function prepareBooking() {
+        let carNumber = document.getElementById("carNumber").value;
+        if (!carNumber) {
+            alert("Please enter a car number!");
+            return;
+        }
+
+        for (let section in parkingSections) {
+            let availableSlot = parkingSections[section].findIndex(booked => !booked);
+            if (availableSlot !== -1) {
+                selectSlot(section, availableSlot);
+                return;
+            }
+        }
+        alert("No available slots!");
+    }
+
+    Object.keys(parkingSections).forEach(renderSlots);
+</script>
+
 </body>
 </html>
