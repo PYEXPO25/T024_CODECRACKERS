@@ -24,7 +24,7 @@ def home():
 @app.route('/contact')
 def contact():
     return render_template("contact.html")
-
+'''sangili mungili kathava thora naa poten vengala puli'''
 
 @app.route('/data')
 def data():
