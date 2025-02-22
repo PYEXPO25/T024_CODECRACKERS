@@ -24,7 +24,7 @@ def home():
 @app.route('/contact')
 def contact():
     return render_template("contact.html")
-'''sangili mungili kathava thora naa poten vengala puli'''
+
 
 @app.route('/data',methods=['POST'])
 def data():
@@ -60,9 +60,9 @@ def signin():
         res=con.execute(query,(username,ph_no,password))
         conn.connection.commit()
         
-        return redirect(url_for("details"))
+        return redirect(url_for("home"))
     
-    return redirect(url_for("details")) 
+    return redirect(url_for("home")) 
         
 
 
@@ -82,14 +82,9 @@ def signup():
     return redirect(url_for("home"))
 
 
-@app.route('/details')
-def details():
-    return render_template("details.html")
-
-
 @app.route('/booking')
 def book():
-    return render_template("booking page.html")
+    return render_template("booking.html")
 
 
 if __name__=='__main__':
