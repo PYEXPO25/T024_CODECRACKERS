@@ -102,9 +102,9 @@ def brookfields():
     return render_template("brookfields.html")
 
 
-@app.route('/kghospital')
-def kghospital():
-    return render_template("kghospital.html")
+@app.route('/kg')
+def kg():
+    return render_template("kg.html")
 
 
 @app.route('/kmch')
@@ -114,6 +114,11 @@ def kmch():
 @app.route('/psg')
 def psg():
     return render_template("psg.html")
+
+
+@app.route('/qr')
+def qr():
+    return render_template("qr.html")
 
 
 if __name__=='__main__':
