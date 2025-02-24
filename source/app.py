@@ -82,9 +82,38 @@ def signup():
     return redirect(url_for("home"))
 
 
-@app.route('/booking')
-def book():
+@app.route('/places')
+def places():
     return render_template("places.html")
+
+
+@app.route('/prozone')
+def prozone():
+    return render_template("prozone.html")
+
+
+@app.route('/fun')
+def fun():
+    return render_template("fun.html")
+
+
+@app.route('/brookes')
+def brookes():
+    return render_template("brookes.html")
+
+
+@app.route('/kghospital')
+def kghospital():
+    return render_template("kghospital.html")
+
+
+@app.route('/kmch')
+def kmch():
+    return render_template("kmch.html")
+
+@app.route('/psg')
+def psg():
+    return render_template("psg.html")
 
 
 if __name__=='__main__':
