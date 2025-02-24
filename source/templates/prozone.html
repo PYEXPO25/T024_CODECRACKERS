@@ -50,15 +50,22 @@
     </div>
 
     <!-- Payment Options -->
-    <div id="paymentOptions" class="hidden mt-4">
-      <h2 class="text-xl font-bold">Payment Options</h2>
-      <p class="text-gray-300">Choose a UPI App:</p>
-      <div class="flex space-x-4 mt-2">
-        <a href="{{ url_for('qr') }}">
-          <button class="pay-btn" onclick="payNow('Google Pay')">Proceed To Payment</button>
-        </a>
-      </div>
-    </div>
+    <h1 class="text-3xl font-bold my-6">UPI Payment</h1>
+    
+    <button onclick="payWithUPI()" class="bg-blue-600 text-white px-6 py-3 rounded-lg text-xl">
+        Pay Now
+    </button>
+
+    <script>
+        function payWithUPI() {
+            const upiID = "your-vpa@upi"; // Change this to your actual UPI ID
+            const amount = "100"; // Change amount dynamically if needed
+            const transactionID = "TXN" + Math.floor(Math.random() * 1000000);
+            const upiLink = upi://pay?pa=${upiID}&pn=UPIPayment&mc=0000&tid=${transactionID}&tr=${transactionID}&tn=Payment&am=${amount}&cu=INR;
+
+            window.location.href = upiLink; // Redirect to UPI payment apps
+        }
+    </script>
 
   </main>
 
