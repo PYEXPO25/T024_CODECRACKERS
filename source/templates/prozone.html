@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Reservation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+     body {
+            background: url("") no-repeat center center/cover;
+            background-size: cover;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+  </style>
+</head>
+<body class="font-roboto bg-gray-900 text-white">
+  
+  <header class="bg-blue-600 p-4 text-center">
+    <h1 class="text-2xl font-bold">Online Reservation - Select Your Slot</h1>
+  </header>
+
+  <main class="container mx-auto p-4">
+    
+    <!-- Slot Categories P1 - P5 -->
+    <h2 class="text-xl font-bold mb-4">Choose Your Parking Slot</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <button class="slot-btn" onclick="showSubSlots('P1')">P1</button>
+      <button class="slot-btn" onclick="showSubSlots('P2')">P2</button>
+      <button class="slot-btn" onclick="showSubSlots('P3')">P3</button>
+      <button class="slot-btn" onclick="showSubSlots('P4')">P4</button>
+      <button class="slot-btn" onclick="showSubSlots('P5')">P5</button>
+    </div>
+
+    <!-- 20 Slots in Selected P1 - P5 -->
+    <div id="subSlots" class="hidden mt-4">
+      <h2 class="text-xl font-bold">Available Slots in <span id="selectedSlot"></span></h2>
+      <div class="grid grid-cols-4 gap-4 mt-2">
+        <!-- 20 Slots -->
+        <script>
+          for (let i = 1; i <= 20; i++) {
+            document.write(`<button class="slot-number" onclick="showPaymentOptions(${i})">Slot ${i}</button>`);
+          }
+        </script>
+      </div>
+    </div>
+
+    <!-- Payment Options -->
+    <div id="paymentOptions" class="hidden mt-4">
+      <h2 class="text-xl font-bold">Payment Options</h2>
+      <p class="text-gray-300">Choose a UPI App:</p>
+      <div class="flex space-x-4 mt-2">
+        <button class="pay-btn" onclick="payNow('Google Pay')">Google Pay</button>
+        <button class="pay-btn" onclick="payNow('PhonePe')">PhonePe</button>
+        <button class="pay-btn" onclick="payNow('Paytm')">Paytm</button>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="bg-blue-600 text-white p-4 mt-8 text-center">
+    <p>© 2025 Online Reservation. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function showSubSlots(slot) {
+      document.getElementById('selectedSlot').innerText = slot;
+      document.getElementById('subSlots').classList.remove('hidden');
+      document.getElementById('paymentOptions').classList.add('hidden');
+    }
+
+    function showPaymentOptions(slot) {
+      alert("Slot " + slot + " Selected");
+      document.getElementById('paymentOptions').classList.remove('hidden');
+    }
+
+    function payNow(method) {
+      alert("Redirecting to " + method);
+    }
+  </script>
+
+  <style>
+    .slot-btn {
+      background: #1e40af;
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .slot-btn:hover { background: #2563eb; }
+
+    .slot-number {
+      background: #b91010;
+      color: white;
+      padding: 8px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .slot-number:hover { background: #059669; }
+
+    .pay-btn {
+      background: #1406d9;
+      color: rgb(8, 0, 0);
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .pay-btn:hover { background: #b45309; }
+  </style>
+
+</body>
+</html>
