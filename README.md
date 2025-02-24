@@ -69,6 +69,6 @@ Images to demonstrate the user interface:
 [Click here to view the project demo video](https://drive.google.com/drive/folders/1QEK-XUOO2uV4c4DhvkaZPQuUvuKSTq7d)
 
 ### 📹 YouTube Link
-[Watch the project on YouTube](insert-youtube-link-here)
+[Watch the project on YouTube](https://youtube.com/shorts/uGDFYmRjIW8?feature=share)
 
 ---
