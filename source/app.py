@@ -97,9 +97,9 @@ def fun():
     return render_template("fun.html")
 
 
-@app.route('/brookes')
-def brookes():
-    return render_template("brookes.html")
+@app.route('/brookfields')
+def brookfields():
+    return render_template("brookfields.html")
 
 
 @app.route('/kghospital')
