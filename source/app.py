@@ -84,7 +84,7 @@ def signup():
 
 @app.route('/booking')
 def book():
-    return render_template("booking.html")
+    return render_template("places.html")
 
 
 if __name__=='__main__':
