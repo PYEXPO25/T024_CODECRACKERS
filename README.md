@@ -41,3 +41,34 @@ Detects the parking space in real time. User friendly application shows real tim
 - *Database:* MySQL
 - *Other Tools:* Open CV,YOLOv8
 
+---
+
+## UI Overview
+
+Images to demonstrate the user interface:
+
+*Example pages:*
+
+1. *Landing Page:*
+   ![Landing Page Mockup](media/LoadingPage.png)
+
+2. *Dashboard:*
+   ![Dashboard Mockup](media/DashBoard.png)
+
+3. *Analytics View:*
+   ![Analytics Mockup](media/Analytics.png)
+
+---
+
+## Resources
+
+### 📄 PowerPoint Presentation
+[Click here to view the PPT](https://drive.google.com/drive/folders/1QEK-XUOO2uV4c4DhvkaZPQuUvuKSTq7d)
+
+### 🎥 Project Video
+[Click here to view the project demo video](https://drive.google.com/drive/folders/1QEK-XUOO2uV4c4DhvkaZPQuUvuKSTq7d)
+
+### 📹 YouTube Link
+[Watch the project on YouTube](insert-youtube-link-here)
+
+---

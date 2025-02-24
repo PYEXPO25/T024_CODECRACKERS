@@ -11,7 +11,7 @@
         }
         .container {
             width: 80%;
-            max-width: 600px;
+            max-width: 1000px;
             margin: auto;
             padding: 20px;
             border: 1px solid #ccc;
@@ -24,16 +24,16 @@
         .slots-container {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
+            gap: 20px;
             justify-content: center;
         }
         .slot {
-            width: 50px;
-            height: 50px;
+            width: 120px;
+            height: 100px;
             background-color: green;
             color: white;
             text-align: center;
-            line-height: 50px;
+            line-height: 100px;
             border-radius: 5px;
             cursor: pointer;
         }
@@ -51,6 +51,15 @@
 
 <div class="container">
     <h2>Book Your Parking Slot</h2>
+    <label for="mallSelect">Select Mall:</label>
+    <select id="mallSelect" onchange="changeMall()">
+        <option value="Prozone Mall">Prozone Mall</option>
+        <option value="Brookfields Mall">Brookfields Mall</option>
+        <option value="Fun Republic Mall">Fun Republic Mall</option>
+        <option value="Lulu Hyper Mall">Lulu Hyper Mall</option>
+        <option value="Broadway Mall">Broadway Mall</option>
+    </select>
+    <br><br>
     <label for="carNumber">Car Number:</label>
     <input type="text" id="carNumber" placeholder="Enter Car Number" required>
     <button onclick="prepareBooking()">Prepare Booking</button>
@@ -63,19 +72,33 @@
 </div>
 
 <script>
-    let parkingSections = {};
-    for (let i = 1; i <= 10; i++) {
-        parkingSections[`P${i}`] = Array(10).fill(false);
-    }
-
+    let parkingData = {};
+    let bookedSlots = {}; 
+    
+    const malls = ["Prozone Mall", "Brookfields Mall", "Fun Republic Mall", "Lulu Hyper Mall", "Broadway Mall"];
+    malls.forEach(mall => {
+        parkingData[mall] = {};
+        bookedSlots[mall] = {};
+        for (let i = 1; i <= 10; i++) {
+            parkingData[mall][`P${i}`] = Array(20).fill(false);
+            bookedSlots[mall][`P${i}`] = {}; 
+        }
+    });
+    
+    let selectedMall = malls[0];
     let selectedSlot = null;
     let selectedSection = null;
+
+    function changeMall() {
+        selectedMall = document.getElementById("mallSelect").value;
+        renderSections();
+    }
 
     function renderSections() {
         let parkingDiv = document.getElementById("parkingSections");
         parkingDiv.innerHTML = "";
         
-        Object.keys(parkingSections).forEach(section => {
+        Object.keys(parkingData[selectedMall]).forEach(section => {
             let sectionDiv = document.createElement("div");
             sectionDiv.classList.add("section");
             sectionDiv.innerHTML = `<h3>${section} Slots</h3>`;
@@ -83,7 +106,7 @@
             let slotsContainer = document.createElement("div");
             slotsContainer.classList.add("slots-container");
             
-            parkingSections[section].forEach((booked, index) => {
+            parkingData[selectedMall][section].forEach((booked, index) => {
                 let slot = document.createElement("div");
                 slot.classList.add("slot");
                 slot.innerText = `${section}-${index + 1}`;
@@ -101,13 +124,19 @@
     }
 
     function selectSlot(section, index) {
-        if (parkingSections[section][index]) {
+        let carNumber = document.getElementById("carNumber").value;
+        if (!carNumber) {
+            alert("Please enter your car number first!");
+            return;
+        }
+        if (bookedSlots[selectedMall][section][index] === carNumber) {
+            alert("You have already booked this slot!");
             return;
         }
         selectedSlot = index;
         selectedSection = section;
         document.getElementById("confirmBookingButton").style.display = "inline-block";
-        document.getElementById("message").innerText = `You have selected Slot ${section}-${index + 1}. Please confirm your booking.`;
+        document.getElementById("message").innerText = `You have selected Slot ${section}-${index + 1} at ${selectedMall}. Please confirm your booking.`;
     }
 
     function prepareBooking() {
@@ -120,15 +149,20 @@
     }
 
     function confirmBooking() {
+        let carNumber = document.getElementById("carNumber").value;
         if (!selectedSlot && !selectedSection) {
             alert("No slot selected!");
             return;
         }
-        let carNumber = document.getElementById("carNumber").value;
-        let confirmBooking = confirm(`Are you sure you want to book Slot ${selectedSection}-${selectedSlot + 1} for Car ${carNumber}?`);
+        if (bookedSlots[selectedMall][selectedSection][selectedSlot]) {
+            alert("This slot is already booked!");
+            return;
+        }
+        let confirmBooking = confirm(`Are you sure you want to book Slot ${selectedSection}-${selectedSlot + 1} at ${selectedMall} for Car ${carNumber}?`);
         if (confirmBooking) {
-            parkingSections[selectedSection][selectedSlot] = true;
-            document.getElementById("message").innerText = `✅ Slot ${selectedSection}-${selectedSlot + 1} booked for Car ${carNumber}`;
+            parkingData[selectedMall][selectedSection][selectedSlot] = true;
+            bookedSlots[selectedMall][selectedSection][selectedSlot] = carNumber;
+            document.getElementById("message").innerText = `✅ Slot ${selectedSection}-${selectedSlot + 1} booked at ${selectedMall} for Car ${carNumber}`;
             document.getElementById("confirmationImage").style.display = "block";
             renderSections();
             document.getElementById("confirmBookingButton").style.display = "none";
@@ -140,6 +174,5 @@
 
     renderSections();
 </script>
-
 </body>
 </html>
