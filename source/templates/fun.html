@@ -54,9 +54,9 @@
       <h2 class="text-xl font-bold">Payment Options</h2>
       <p class="text-gray-300">Choose a UPI App:</p>
       <div class="flex space-x-4 mt-2">
-        <button class="pay-btn" onclick="payNow('Google Pay')">Google Pay</button>
-        <button class="pay-btn" onclick="payNow('PhonePe')">PhonePe</button>
-        <button class="pay-btn" onclick="payNow('Paytm')">Paytm</button>
+        <a href="{{ url_for('qr') }}">
+          <button class="pay-btn" onclick="payNow('Google Pay')">Proceed To Payment</button>
+        </a>
       </div>
     </div>
 
