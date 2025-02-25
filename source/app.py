@@ -56,10 +56,10 @@ def signin():
         ph_no = request.form.get('phno')
         password = request.form.get('password')
 
-        con = conn.cursor(dictionary=True)  # Enable dictionary output for better handling
+        con = conn.connection.cursor(dictionary=True)  # Enable dictionary output for better handling
         query = "SELECT * FROM login WHERE user_name = %s AND phno = %s AND password = %s"
         
-        con.execute(query, (username, ph_no, password))
+        res=con.execute(query, (username, ph_no, password))
         user = con.fetchone()
         con.close()  # Close the cursor after execution
 
