@@ -51,23 +51,18 @@ def login():
 
 @app.route('/signin',methods=['POST'])
 def signin():
-    if request.method in ['GET', 'POST']:
-        username = request.form.get('username')
-        ph_no = request.form.get('phno')
-        password = request.form.get('password')
-
-        con = conn.connection.cursor(dictionary=True)  # Enable dictionary output for better handling
-        query = "SELECT * FROM login WHERE user_name = %s AND phno = %s AND password = %s"
+    if request.method==['GET', 'POST']:
+        username=request.form['username']
+        ph_no=request.form['phno']
+        password=request.form['password']
+        con=conn.connection.cursor()
+        query="SELECT * FROM login user_name= %s AND phno= %s password= %s"
+        res=con.execute(query,(username,ph_no,password))
+        conn.connection.commit()
         
-        res=con.execute(query, (username, ph_no, password))
-        user = con.fetchone()
-        con.close()  # Close the cursor after execution
-
-        if user:  # Check if user exists
-            return redirect(url_for("home"))
-
-    return redirect(url_for("home"))
-
+        return redirect(url_for("home"))
+    
+    return redirect(url_for("home")) 
         
 
 
