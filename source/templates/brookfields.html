@@ -8,58 +8,68 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
   <style>
-     body {
-            background: url("") no-repeat center center/cover;
-            background-size: cover;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
+    body {
+      background: url("your-background-image.jpg") no-repeat center center/cover;
+      background-size: cover;
+      height: 100vh;
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+    }
+    .hidden { display: none; }
+    .btn {
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.3s;
+      color: white;
+    }
+    .mall-btn { background: #1e40af; }
+    .mall-btn:hover { background: #2563eb; }
+    .slot-btn { background: #b91010; }
+    .slot-btn:hover { background: #059669; }
+    .pay-btn { background: #1406d9; }
+    .pay-btn:hover { background: #b45309; }
   </style>
 </head>
 <body class="font-roboto bg-gray-900 text-white">
   
   <header class="bg-blue-600 p-4 text-center">
-    <h1 class="text-2xl font-bold">Online Reservation - Select Your Slot</h1>
-    <h1 class="text-2xl font-bold">Brookfields Mall</h1>
+    <h1 class="text-2xl font-bold">Online Reservation</h1>
   </header>
 
   <main class="container mx-auto p-4">
-    
-    <!-- Slot Categories P1 - P5 -->
-    <h2 class="text-xl font-bold mb-4">Choose Your Parking Slot</h2>
+    <!-- Step 1: Mall Selection -->
+    <h2 class="text-xl font-bold mb-4">📍 Select a Mall</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <button class="slot-btn" onclick="showSubSlots('P1')">P1</button>
-      <button class="slot-btn" onclick="showSubSlots('P2')">P2</button>
-      <button class="slot-btn" onclick="showSubSlots('P3')">P3</button>
-      <button class="slot-btn" onclick="showSubSlots('P4')">P4</button>
-      <button class="slot-btn" onclick="showSubSlots('P5')">P5</button>
+      <button class="btn mall-btn" onclick="selectMall('Brookfields Mall')">Brookfields Mall</button>
+      <button class="btn mall-btn" onclick="selectMall('Fun Mall')">Fun Mall</button>
+      <button class="btn mall-btn" onclick="selectMall('Prozone Mall')">Prozone Mall</button>
     </div>
 
-    <!-- 20 Slots in Selected P1 - P5 -->
+    <!-- Step 2: Slot Selection (Hidden initially) -->
+    <div id="slotSection" class="hidden mt-4">
+      <h2 class="text-xl font-bold">🚗 Choose Your Parking Slot</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <button class="btn slot-btn" onclick="showSubSlots('P1')">P1</button>
+        <button class="btn slot-btn" onclick="showSubSlots('P2')">P2</button>
+        <button class="btn slot-btn" onclick="showSubSlots('P3')">P3</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Show Slots -->
     <div id="subSlots" class="hidden mt-4">
-      <h2 class="text-xl font-bold">Available Slots in <span id="selectedSlot"></span></h2>
-      <div class="grid grid-cols-4 gap-4 mt-2">
-        <!-- 20 Slots -->
-        <script>
-          for (let i = 1; i <= 20; i++) {
-            document.write(`<button class="slot-number" onclick="showPaymentOptions(${i})">Slot ${i}</button>`);
-          }
-        </script>
-      </div>
+      <h2 class="text-xl font-bold">🔲 Available Slots in <span id="selectedSlot"></span></h2>
+      <div id="slotsContainer" class="grid grid-cols-4 gap-4 mt-2"></div>
+      <p id="fullMessage" class="text-red-500 hidden">⚠️ All slots are full! You will be notified when a slot is free.</p>
+      <button id="subscribeBtn" class="pay-btn hidden" onclick="subscribeNotification()">📌 Subscribe for Availability</button>
     </div>
 
-    <!-- Payment Options -->
+    <!-- Step 4: Payment -->
     <div id="paymentOptions" class="hidden mt-4">
-      <h2 class="text-xl font-bold">Payment Options</h2>
-      <p class="text-gray-300">Choose a UPI App:</p>
-      <div class="flex space-x-4 mt-2">
-        <a href="{{ url_for('qr') }}">
-          <button class="pay-btn" onclick="payNow('Google Pay')">Proceed To Payment</button>
-        </a>
-      </div>
+      <h2 class="text-xl font-bold">💳 Payment Options</h2>
+      <button class="pay-btn" onclick="redirectToPayment()">Proceed To Payment</button>
     </div>
-
   </main>
 
   <footer class="bg-blue-600 text-white p-4 mt-8 text-center">
@@ -67,56 +77,103 @@
   </footer>
 
   <script>
+    let selectedMall = null;
+    let slotsStatus = {}; // Store slot availability
+    let subscribers = false;
+
+    function selectMall(mall) {
+      selectedMall = mall;
+      alert("Mall Selected: " + mall);
+      document.getElementById('slotSection').classList.remove('hidden');
+    }
+
     function showSubSlots(slot) {
+      if (!selectedMall) {
+        alert("📍 Please select a mall first!");
+        return;
+      }
+
       document.getElementById('selectedSlot').innerText = slot;
       document.getElementById('subSlots').classList.remove('hidden');
       document.getElementById('paymentOptions').classList.add('hidden');
+
+      let slotsContainer = document.getElementById('slotsContainer');
+      slotsContainer.innerHTML = '';
+
+      if (!slotsStatus[slot]) {
+        slotsStatus[slot] = Array(10).fill(false);
+      }
+
+      let allFull = true;
+
+      for (let i = 1; i <= 10; i++) {
+        let slotBtn = document.createElement('button');
+        slotBtn.className = "btn slot-btn";
+        slotBtn.innerText = `Slot ${i}`;
+
+        if (slotsStatus[slot][i - 1]) { 
+          slotBtn.disabled = true;
+          slotBtn.style.background = "#555"; 
+        } else {
+          allFull = false;
+          slotBtn.onclick = function() { selectSlot(slot, slotBtn, i); };
+        }
+
+        slotsContainer.appendChild(slotBtn);
+      }
+
+      if (allFull) {
+        document.getElementById('fullMessage').classList.remove('hidden');
+        document.getElementById('subscribeBtn').classList.remove('hidden');
+      } else {
+        document.getElementById('fullMessage').classList.add('hidden');
+        document.getElementById('subscribeBtn').classList.add('hidden');
+      }
     }
 
-    function showPaymentOptions(slot) {
-      alert("Slot " + slot + " Selected");
+    function selectSlot(slot, slotElement, slotNumber) {
+      let allSlots = document.querySelectorAll('.slot-btn');
+      allSlots.forEach(btn => btn.classList.remove('selected'));
+
+      slotElement.classList.add('selected');
+      alert("Slot " + slotNumber + " Selected");
+
+      slotsStatus[slot][slotNumber - 1] = true;
+
       document.getElementById('paymentOptions').classList.remove('hidden');
+
+      checkAvailability(slot);
     }
 
-    function payNow(method) {
-      alert("Redirecting to " + method);
+    function checkAvailability(slot) {
+      let allFull = slotsStatus[slot].every(status => status === true);
+
+      if (allFull) {
+        document.getElementById('fullMessage').classList.remove('hidden');
+        document.getElementById('subscribeBtn').classList.remove('hidden');
+      }
+
+      if (subscribers && !allFull) {
+        alert("📢 A slot has become available at " + selectedMall + "! Book now.");
+        subscribers = false;
+      }
+    }
+
+    function subscribeNotification() {
+      if (!selectedMall) {
+        alert("📍 Please select a mall first!");
+        return;
+      }
+      
+      subscribers = true;
+      alert("✅ You will be notified when a slot is available at " + selectedMall);
+    }
+
+    function redirectToPayment() {
+      alert("Redirecting to payment...");
+      window.location.href = "{{ url_for('qr') }}";
     }
   </script>
-
-  <style>
-    .slot-btn {
-      background: #1e40af;
-      color: white;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 18px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .slot-btn:hover { background: #2563eb; }
-
-    .slot-number {
-      background: #b91010;
-      color: white;
-      padding: 8px;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .slot-number:hover { background: #059669; }
-
-    .pay-btn {
-      background: #1406d9;
-      color: rgb(8, 0, 0);
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 18px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .pay-btn:hover { background: #b45309; }
-  </style>
 
 </body>
 </html>
