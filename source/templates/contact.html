@@ -3,107 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us</title>
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <title>Message Tracker</title>
     <style>
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: url("") no-repeat center center/cover;
+            background-size: cover;
             height: 100vh;
-            background: black;
-            font-family: Arial, sans-serif;
             margin: 0;
-            color: white;
+            font-family: Arial, sans-serif;
         }
         .container {
-            width: 90%;
             max-width: 400px;
-            background: rgba(30, 30, 30, 0.9);
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.9);
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
             text-align: center;
         }
         input, textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #555;
+            width: 90%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
             border-radius: 5px;
-            background: #222;
-            color: white;
         }
         button {
-            padding: 12px 24px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
+            background: #28a745;
             color: white;
-            transition: 0.3s;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
             width: 100%;
+            margin-top: 10px;
+            border-radius: 5px;
         }
         button:hover {
-            background-color: #0056b3;
+            background: #218838;
+        }
+        #error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Contact Us</h2>
-        <form action="{{url_for('data')}}" method='POST'>
-            <label for="name">Name</label>
-            <input type="text" name="name" id="name"  class="input-field" required>
-            <p id="nameError" class="error"></p>
-            
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" class="input-field" required>
-            <p id="emailError" class="error"></p>
-            
-            <label for="message">Message</label>
-            <textarea name="message" id="message"  class="textarea-field" required></textarea>
-            <p id="messageError" class="error"></p>
-            
-            <button type="submit" class="button">Send</button>
-        </form>
+        <h2>Message Tracker</h2>
+        
+        <label for="username">Username:</label>
+        <input type="text" id="username" placeholder="Enter your name">
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" placeholder="Enter your email">
+
+        <label for="message">Message:</label>
+        <textarea id="message" placeholder="Enter your message"></textarea>
+
+        <button onclick="sendMessage()">Send Message</button>
+
+        <p id="error"></p>
     </div>
-    
+
     <script>
-        document.getElementById("contactForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            let name = document.getElementById("name").value;
-            let email = document.getElementById("email").value;
-            let message = document.getElementById("message").value;
-            let nameError = document.getElementById("nameError");
-            let emailError = document.getElementById("emailError");
-            let messageError = document.getElementById("messageError");
-            
-            nameError.textContent = "";
-            emailError.textContent = "";
-            messageError.textContent = "";
-            
-            let valid = true;
-            
-            if (name.trim() === "") {
-                nameError.textContent = "Name cannot be empty";
-                valid = false;
+        function sendMessage() {
+            let username = document.getElementById('username').value.trim();
+            let email = document.getElementById('email').value.trim();
+            let message = document.getElementById('message').value.trim();
+            let errorMsg = document.getElementById('error');
+
+            // Updated email validation: Ensures email starts with a letter
+            let emailPattern = /^[a-zA-Z][a-zA-Z0-9._%+-]*@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
+
+            if (username === '') {
+                errorMsg.innerText = 'Please enter your name.';
+                return;
             }
-            if (!email.includes("@")) {
-                emailError.textContent = "Enter a valid email";
-                valid = false;
+            if (!emailPattern.test(email)) {
+                errorMsg.innerText = 'Please enter a valid email address that starts with a letter.';
+                return;
             }
-            if (message.trim() === "") {
-                messageError.textContent = "Message cannot be empty";
-                valid = false;
+            if (message === '') {
+                errorMsg.innerText = 'Please enter a message.';
+                return;
             }
-            
-            if (valid) {
-                alert("Form submitted successfully!");
-                document.getElementById("contactForm").reset();
-            }
-        });
+
+            errorMsg.innerText = '';
+            alert(`Message sent successfully!\n\nUsername: ${username}\nEmail: ${email}\nMessage: ${message}`);
+
+            document.getElementById('username').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('message').value = '';
+        }
     </script>
 </body>
 </html>
