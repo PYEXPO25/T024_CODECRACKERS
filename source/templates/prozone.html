@@ -26,7 +26,6 @@
 
   <main class="container mx-auto p-4">
     
-    <!-- Slot Categories P1 - P5 -->
     <h2 class="text-xl font-bold mb-4">Choose Your Parking Slot</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <button class="slot-btn" onclick="showSubSlots('P1')">P1</button>
@@ -36,26 +35,29 @@
       <button class="slot-btn" onclick="showSubSlots('P5')">P5</button>
     </div>
 
-    <!-- 20 Slots in Selected P1 - P5 -->
     <div id="subSlots" class="hidden mt-4">
       <h2 class="text-xl font-bold">Available Slots in <span id="selectedSlot"></span></h2>
-      <div class="grid grid-cols-4 gap-4 mt-2">
-        <!-- 20 Slots -->
-        <script>
-          for (let i = 1; i <= 20; i++) {
-            document.write(`<button class="slot-number" onclick="showPaymentOptions(${i})">Slot ${i}</button>`);
-          }
-        </script>
+      <div class="grid grid-cols-4 gap-4 mt-2" id="slotContainer"></div>
+    </div>
+
+    <div id="timingOptions" class="hidden mt-4">
+      <h2 class="text-xl font-bold">Select Time Slot</h2>
+      <div class="grid grid-cols-3 gap-2 mt-2">
+        <button class="time-slot" onclick="showPaymentOptions('10:00 AM - 11:00 AM')">10:00 AM - 11:00 AM</button>
+        <button class="time-slot" onclick="showPaymentOptions('11:00 AM - 12:00 PM')">11:00 AM - 12:00 PM</button>
+        <button class="time-slot" onclick="showPaymentOptions('12:00 PM - 1:00 PM')">12:00 PM - 1:00 PM</button>
+        <button class="time-slot" onclick="showPaymentOptions('1:00 PM - 2:00 PM')">1:00 PM - 2:00 PM</button>
+        <button class="time-slot" onclick="showPaymentOptions('2:00 PM - 3:00 PM')">2:00 PM - 3:00 PM</button>
+        <button class="time-slot" onclick="showPaymentOptions('3:00 PM - 4:00 PM')">3:00 PM - 4:00 PM</button>
       </div>
     </div>
 
-    <!-- Payment Options -->
     <div id="paymentOptions" class="hidden mt-4">
       <h2 class="text-xl font-bold">Payment Options</h2>
-      <p class="text-gray-300">Choose a UPI App:</p>
+      <p class="text-gray-300">Proceed to Payment:</p>
       <div class="flex space-x-4 mt-2">
         <a href="{{ url_for('qr') }}">
-          <button class="pay-btn" onclick="payNow('Google Pay')">Proceed To Payment</button>
+          <button class="pay-btn">Proceed To Payment</button>
         </a>
       </div>
     </div>
@@ -70,52 +72,42 @@
     function showSubSlots(slot) {
       document.getElementById('selectedSlot').innerText = slot;
       document.getElementById('subSlots').classList.remove('hidden');
+      document.getElementById('timingOptions').classList.add('hidden');
+      document.getElementById('paymentOptions').classList.add('hidden');
+      let slotContainer = document.getElementById('slotContainer');
+      slotContainer.innerHTML = '';
+      for (let i = 1; i <= 20; i++) {
+        let button = document.createElement('button');
+        button.className = 'slot-number';
+        button.innerText = `Slot ${i}`;
+        button.onclick = function() { showTimingOptions(i); };
+        slotContainer.appendChild(button);
+      }
+    }
+
+    function showTimingOptions(slot) {
+      alert("Slot " + slot + " Selected");
+      document.getElementById('timingOptions').classList.remove('hidden');
       document.getElementById('paymentOptions').classList.add('hidden');
     }
 
-    function showPaymentOptions(slot) {
-      alert("Slot " + slot + " Selected");
+    function showPaymentOptions(time) {
+      alert("Time Slot: " + time + " Selected");
       document.getElementById('paymentOptions').classList.remove('hidden');
-    }
-
-    function payNow(method) {
-      alert("Redirecting to " + method);
     }
   </script>
 
   <style>
-    .slot-btn {
+    .slot-btn, .time-slot, .slot-number, .pay-btn {
       background: #1e40af;
       color: white;
       padding: 10px;
       border-radius: 8px;
-      font-size: 18px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .slot-btn:hover { background: #2563eb; }
-
-    .slot-number {
-      background: #b91010;
-      color: white;
-      padding: 8px;
-      border-radius: 6px;
       font-size: 16px;
       cursor: pointer;
       transition: 0.3s;
     }
-    .slot-number:hover { background: #059669; }
-
-    .pay-btn {
-      background: #1406d9;
-      color: rgb(8, 0, 0);
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 18px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .pay-btn:hover { background: #b45309; }
+    .slot-btn:hover, .time-slot:hover, .slot-number:hover, .pay-btn:hover { background: #2563eb; }
   </style>
 
 </body>
