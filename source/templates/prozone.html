@@ -47,11 +47,9 @@
     </div>
 
     <div id="timeSelection" class="hidden mt-4">
-      <h2 class="text-xl font-bold">Select Timing</h2>
-      <label for="startTime">Start Time:</label>
-      <input type="time" id="startTime" class="text-black p-2 rounded" onchange="setEndTime()">
-      <p id="endTimeDisplay" class="mt-2"></p>
-      <button class="pay-btn mt-4" onclick="showPaymentOptions()">Proceed</button>
+      <h2 class="text-xl font-bold">Select Start Time</h2>
+      <input type="time" id="startTime" class="text-black p-2 rounded" required>
+      <button class="pay-btn mt-2" onclick="showPaymentOptions()">Proceed</button>
     </div>
 
     <div id="paymentOptions" class="hidden mt-4">
@@ -63,6 +61,7 @@
         </a>
       </div>
     </div>
+
   </main>
 
   <footer class="bg-blue-600 text-white p-4 mt-8 text-center">
@@ -83,18 +82,13 @@
       document.getElementById('paymentOptions').classList.add('hidden');
     }
 
-    function setEndTime() {
-      let startTime = document.getElementById('startTime').value;
-      if (startTime) {
-        let [hours, minutes] = startTime.split(':').map(Number);
-        let endHours = hours + 1;
-        if (endHours >= 24) endHours -= 24;
-        let endTime = `${String(endHours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-        document.getElementById('endTimeDisplay').innerText = `End Time: ${endTime}`;
-      }
-    }
-
     function showPaymentOptions() {
+      let startTime = document.getElementById('startTime').value;
+      if (!startTime) {
+        alert("Please select a start time.");
+        return;
+      }
+      alert("Start Time: " + startTime);
       document.getElementById('paymentOptions').classList.remove('hidden');
     }
   </script>
