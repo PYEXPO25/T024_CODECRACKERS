@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Reservation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+     body {
+            background: url("") no-repeat center center/cover;
+            background-size: cover;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+  </style>
+</head>
+<body class="font-roboto bg-gray-900 text-white">
+  
+  <header class="bg-blue-600 p-4 text-center">
+    <h1 class="text-2xl font-bold">Online Reservation - Select Your Slot</h1>
+    <h1 class="text-2xl font-bold">Fun Republic Mall</h1>
+  </header>
+
+  <main class="container mx-auto p-4">
+    
+    <h2 class="text-xl font-bold mb-4">Choose Your Parking Slot</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <button class="slot-btn" onclick="showSubSlots('P1')">P1</button>
+      <button class="slot-btn" onclick="showSubSlots('P2')">P2</button>
+      <button class="slot-btn" onclick="showSubSlots('P3')">P3</button>
+      <button class="slot-btn" onclick="showSubSlots('P4')">P4</button>
+      <button class="slot-btn" onclick="showSubSlots('P5')">P5</button>
+    </div>
+
+    <div id="subSlots" class="hidden mt-4">
+      <h2 class="text-xl font-bold">Available Slots in <span id="selectedSlot"></span></h2>
+      <div class="grid grid-cols-4 gap-4 mt-2">
+        <script>
+          for (let i = 1; i <= 20; i++) {
+            document.write(`<button class="slot-number" onclick="showTimeSelection(${i})">Slot ${i}</button>`);
+          }
+        </script>
+      </div>
+    </div>
+
+    <div id="timeSelection" class="hidden mt-4">
+      <h2 class="text-xl font-bold">Select Start Time</h2>
+      <input type="time" id="startTime" class="text-black p-2 rounded" required>
+      <button class="pay-btn mt-2" onclick="showPaymentOptions()">Proceed</button>
+    </div>
+
+    <div id="paymentOptions" class="hidden mt-4">
+      <h2 class="text-xl font-bold">Payment Options</h2>
+      <p class="text-gray-300">Choose a UPI App:</p>
+      <div class="flex space-x-4 mt-2">
+        <a href="{{ url_for('qr') }}">
+          <button class="pay-btn">Proceed To Payment</button>
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="bg-blue-600 text-white p-4 mt-8 text-center">
+    <p>© 2025 Online Reservation. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function showSubSlots(slot) {
+      document.getElementById('selectedSlot').innerText = slot;
+      document.getElementById('subSlots').classList.remove('hidden');
+      document.getElementById('timeSelection').classList.add('hidden');
+      document.getElementById('paymentOptions').classList.add('hidden');
+    }
+
+    function showTimeSelection(slot) {
+      alert("Slot " + slot + " Selected");
+      document.getElementById('timeSelection').classList.remove('hidden');
+      document.getElementById('paymentOptions').classList.add('hidden');
+    }
+
+    function showPaymentOptions() {
+      let startTime = document.getElementById('startTime').value;
+      if (!startTime) {
+        alert("Please select a start time.");
+        return;
+      }
+      alert("Start Time: " + startTime);
+      document.getElementById('paymentOptions').classList.remove('hidden');
+    }
+  </script>
+
+  <style>
+    .slot-btn {
+      background: #1e40af;
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .slot-btn:hover { background: #2563eb; }
+
+    .slot-number {
+      background: #b91010;
+      color: white;
+      padding: 8px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .slot-number:hover { background: #059669; }
+
+    .pay-btn {
+      background: #1406d9;
+      color: rgb(8, 0, 0);
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .pay-btn:hover { background: #b45309; }
+  </style>
+
+</body>
+</html>

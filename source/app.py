@@ -82,9 +82,43 @@ def signup():
     return redirect(url_for("home"))
 
 
-@app.route('/booking')
-def book():
-    return render_template("booking.html")
+@app.route('/places')
+def places():
+    return render_template("places.html")
+
+
+@app.route('/prozone')
+def prozone():
+    return render_template("prozone.html")
+
+
+@app.route('/fun')
+def fun():
+    return render_template("fun.html")
+
+
+@app.route('/brookfields')
+def brookfields():
+    return render_template("brookfields.html")
+
+
+@app.route('/kg')
+def kg():
+    return render_template("kg.html")
+
+
+@app.route('/kmch')
+def kmch():
+    return render_template("kmch.html")
+
+@app.route('/psg')
+def psg():
+    return render_template("psg.html")
+
+
+@app.route('/qr')
+def qr():
+    return render_template("qr.html")
 
 
 if __name__=='__main__':

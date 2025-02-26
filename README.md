@@ -36,8 +36,39 @@ Detects the parking space in real time. User friendly application shows real tim
 ## Technical Stack
 
 
-- *Frontend:* HTML, CSS
+- *Frontend:* HTML, CSS, JavaScript
 - *Backend:* Flask
 - *Database:* MySQL
 - *Other Tools:* Open CV,YOLOv8
 
+---
+
+## UI Overview
+
+Images to demonstrate the user interface:
+
+*Example pages:*
+
+1. *Landing Page:*
+   ![Landing Page Mockup](media/LoadingPage.png)
+
+2. *Dashboard:*
+   ![Dashboard Mockup](media/DashBoard.png)
+
+3. *Analytics View:*
+   ![Analytics Mockup](media/Analytics.png)
+
+---
+
+## Resources
+
+### 📄 PowerPoint Presentation
+[Click here to view the PPT](https://drive.google.com/file/d/17VDWMsuR9bGwOe1hPa3hVmDZiCe2Sl58/view?usp=drive_link)
+
+### 🎥 Project Video
+[Click here to view the project demo video](https://drive.google.com/file/d/1HDsmwK_ipdTLs-BzUuarm0_Y5JWx6DqE/view?usp=drive_link)
+
+### 📹 YouTube Link
+[Watch the project on YouTube](https://youtube.com/shorts/awCR8rzRaRU?feature=share)
+
+---
