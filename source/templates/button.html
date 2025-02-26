@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/reserve" method="POST" id="slotForm">
+        <input type="hidden" name="selected_slot" id="selectedSlotInput">
+        <button type="button" class="slot-btn" onclick="selectSlot('P1')">P1</button>
+        <button type="button" class="slot-btn" onclick="selectSlot('P2')">P2</button>
+        <button type="button" class="slot-btn" onclick="selectSlot('P3')">P3</button>
+        <br>
+        <button type="submit">Confirm Selection</button>
+    </form>
+    
+    <script>
+      function selectSlot(slot) {
+        document.getElementById("selectedSlotInput").value = slot; // Set input value
+        console.log("Slot selected:", slot); // Debugging
+      }
+    </script>
+    
+</body>
+</html>
