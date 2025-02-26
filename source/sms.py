@@ -9,7 +9,7 @@ def config():
 
 def main():
     config()
-    sid=os.getenv('STD')
+    sid=os.getenv('SID')
     account_sid = sid
     token=os.getenv("TOKEN")
     auth_token = token
