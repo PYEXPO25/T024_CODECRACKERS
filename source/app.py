@@ -1,5 +1,10 @@
 from flask import Flask,render_template,redirect,request,url_for,flash
 from flask_mysqldb import MySQL,MySQLdb
+from twilio.rest import Client
+from dotenv import load_dotenv
+import os
+from sms import main
+
 
 app = Flask(__name__)
 
@@ -9,6 +14,7 @@ app.config['MYSQL_USER']= "root"
 app.config['MYSQL_PASSWORD']= "Kgkite@123"
 app.secret_key="myapp"
 conn = MySQL(app)
+
 
 
 @app.route('/')
@@ -119,6 +125,19 @@ def psg():
 @app.route('/qr')
 def qr():
     return render_template("qr.html")
+
+
+@app.route('/book',methods=['POST'])
+def book():
+    if request.method== 'POST':
+        slot = request.form['slot']
+        subslot=request.form['subslot']
+        time = request.form['time']
+        main(slot,subslot,time)
+        
+        return redirect(url_for("home"))
+    
+    return redirect(url_for("home"))
 
 
 if __name__=='__main__':

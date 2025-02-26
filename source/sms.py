@@ -4,10 +4,10 @@ import os
 
 
 def config():
-    load_dotenv
+    load_dotenv()
 
 
-def main():
+def main(a,b,c):
     config()
     sid=os.getenv('SID')
     account_sid = sid
@@ -15,9 +15,8 @@ def main():
     auth_token = token
     client = Client(account_sid, auth_token)
 
-    message = client.messages.create(body='Hello, this from twilio',from_='+13525081703',to='+919578814692')
+    message = client.messages.create(body=f'Your {a}{b}{c}',from_='+13525081703',to='+919578814692')
 
     print(message.sid)
 
 
-main()
