@@ -26,7 +26,6 @@
 
   <main class="container mx-auto p-4">
     
-    <!-- Slot Categories P1 - P5 -->
     <h2 class="text-xl font-bold mb-4">Choose Your Parking Slot</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <button class="slot-btn" onclick="showSubSlots('P1')">P1</button>
@@ -36,26 +35,29 @@
       <button class="slot-btn" onclick="showSubSlots('P5')">P5</button>
     </div>
 
-    <!-- 20 Slots in Selected P1 - P5 -->
     <div id="subSlots" class="hidden mt-4">
       <h2 class="text-xl font-bold">Available Slots in <span id="selectedSlot"></span></h2>
       <div class="grid grid-cols-4 gap-4 mt-2">
-        <!-- 20 Slots -->
         <script>
           for (let i = 1; i <= 20; i++) {
-            document.write(`<button class="slot-number" onclick="showPaymentOptions(${i})">Slot ${i}</button>`);
+            document.write(`<button class="slot-number" onclick="showTimeSelection(${i})">Slot ${i}</button>`);
           }
         </script>
       </div>
     </div>
 
-    <!-- Payment Options -->
+    <div id="timeSelection" class="hidden mt-4">
+      <h2 class="text-xl font-bold">Select Start Time</h2>
+      <input type="time" id="startTime" class="text-black p-2 rounded" required>
+      <button class="pay-btn mt-2" onclick="showPaymentOptions()">Proceed</button>
+    </div>
+
     <div id="paymentOptions" class="hidden mt-4">
       <h2 class="text-xl font-bold">Payment Options</h2>
       <p class="text-gray-300">Choose a UPI App:</p>
       <div class="flex space-x-4 mt-2">
         <a href="{{ url_for('qr') }}">
-          <button class="pay-btn" onclick="payNow('Google Pay')">Proceed To Payment</button>
+          <button class="pay-btn">Proceed To Payment</button>
         </a>
       </div>
     </div>
@@ -70,16 +72,24 @@
     function showSubSlots(slot) {
       document.getElementById('selectedSlot').innerText = slot;
       document.getElementById('subSlots').classList.remove('hidden');
+      document.getElementById('timeSelection').classList.add('hidden');
       document.getElementById('paymentOptions').classList.add('hidden');
     }
 
-    function showPaymentOptions(slot) {
+    function showTimeSelection(slot) {
       alert("Slot " + slot + " Selected");
-      document.getElementById('paymentOptions').classList.remove('hidden');
+      document.getElementById('timeSelection').classList.remove('hidden');
+      document.getElementById('paymentOptions').classList.add('hidden');
     }
 
-    function payNow(method) {
-      alert("Redirecting to " + method);
+    function showPaymentOptions() {
+      let startTime = document.getElementById('startTime').value;
+      if (!startTime) {
+        alert("Please select a start time.");
+        return;
+      }
+      alert("Start Time: " + startTime);
+      document.getElementById('paymentOptions').classList.remove('hidden');
     }
   </script>
 
