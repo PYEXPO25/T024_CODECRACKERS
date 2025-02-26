@@ -15,6 +15,42 @@
             margin: 0;
             font-family: Arial, sans-serif;
         }
+            /* Back Button */
+    .back-btn {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: white;
+        color: #1e40af;
+        border-radius: 8px;
+        padding: 10px 15px;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background 0.3s, transform 0.2s;
+        z-index: 1000;
+    }
+    .back-btn i {
+        margin-right: 8px;
+    }
+    .back-btn:hover {
+        background: #1e40af;
+        color: white;
+        transform: scale(1.05);
+    }
+  </style>
+</head>
+<body class="font-roboto bg-gray-900 text-white">
+
+  <!-- Back Button -->
+  <div class="back-btn" onclick="history.back()">
+      <i class="fas fa-arrow-left"></i> Back
+  </div>
+
+  
   </style>
 </head>
 <body class="font-roboto bg-gray-900 text-white">
