@@ -1,8 +1,8 @@
-from flask import Flask,render_template,redirect,request,url_for,flash
+from flask import Flask,render_template,redirect,request,url_for,flash,jsonify
 from flask_mysqldb import MySQL,MySQLdb
 from twilio.rest import Client
 from dotenv import load_dotenv
-import os
+from datetime import datetime, timedelta
 from sms import main
 
 
@@ -15,10 +15,15 @@ app.config['MYSQL_PASSWORD']= "Kgkite@123"
 app.secret_key="myapp"
 conn = MySQL(app)
 
+name=""
+ph_no=0
+password=""
+
 
 
 @app.route('/')
 def start():
+    alerts = fetch_alerts()
     return render_template("front page.html")
 
 
@@ -62,11 +67,12 @@ def signin():
         ph_no=request.form['phno']
         password=request.form['password']
         con=conn.connection.cursor()
-        query="SELECT * FROM login user_name= %s AND phno= %s password= %s"
-        res=con.execute(query,(username,ph_no,password))
-        conn.connection.commit()
-        
-        return redirect(url_for("home"))
+        query="SELECT * FROM login WHERE user_name= %s AND phno= %s password= %s"
+        con.execute(query,(username,ph_no,password))
+        user = con.fetchone()
+        if user:
+            
+            return redirect(url_for("home"))
     
     return redirect(url_for("home")) 
         
@@ -127,6 +133,11 @@ def qr():
     return render_template("qr.html")
 
 
+@app.route('/entry')
+def entry():
+    return render_template("entry.html")
+
+
 @app.route('/book',methods=['POST'])
 def book():
     if request.method== 'POST':
@@ -134,10 +145,42 @@ def book():
         subslot=request.form['subslot']
         time = request.form['time']
         main(slot,subslot,time)
+        con=conn.connection.cursor()
+        query="INSERT INTO book(slot,subslot,book_time) VALUES (%s,%s,%s)"
+        res=con.execute(query,(slot,subslot,time))
+        conn.connection.commit()
         
-        return redirect(url_for("home"))
+        
+        return redirect(url_for("qr"))
     
     return redirect(url_for("home"))
+
+
+def fetch_alerts():
+    """Fetch reservations starting in the next 10 minutes."""
+    alerts = []
+    try:
+        con = conn.connection.cursor()
+
+        now = datetime.now()
+        alert_time = now + timedelta(minutes=10)
+
+        # Fetch bookings
+        con.execute("SELECT slot, subslot, time FROM reservations")
+        bookings = con.fetchall()
+
+        for slot, subslot, start_time in bookings:
+            booking_time = datetime.strptime(str(start_time), "%H:%M:%S")
+
+            # If booking is within the next 10 minutes, add to alerts
+            if now.hour == booking_time.hour and (booking_time.minute - now.minute) <= 10:
+                alerts.append(f"🚨 ALERT: Slot {slot}, Subslot {subslot} starts at {start_time}!")
+
+        conn.close()
+    except Exception as err:
+        alerts.append(f"❌ Database Error: {err}")
+    
+    return alerts
 
 
 if __name__=='__main__':

@@ -9,13 +9,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
   <style>
      body {
-            background: url("") no-repeat center center/cover;
-            background-size: cover;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-            /* Back Button */
+        background: url("") no-repeat center center/cover;
+        background-size: cover;
+        height: 100vh;
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    /* Back Button */
     .back-btn {
         position: fixed;
         top: 20px;
@@ -50,11 +51,6 @@
       <i class="fas fa-arrow-left"></i> Back
   </div>
 
-  
-  </style>
-</head>
-<body class="font-roboto bg-gray-900 text-white">
-  
   <header class="bg-blue-600 p-4 text-center">
     <h1 class="text-2xl font-bold">Online Reservation - Select Your Slot</h1>
     <h1 class="text-2xl font-bold">Psg Hospital</h1>
@@ -64,22 +60,24 @@
     <form action="{{ url_for('book') }}" method="POST">
     <h2 class="text-xl font-bold mb-4">Choose Your Parking Slot</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <input type="hidden" name="slot" id="selectedSlotInput">
       <button class="slot-btn" onclick="showSubSlots('P1');selectSlot('P1')">P1</button>
-      <button class="slot-btn" onclick="showSubSlots('P1');selectSlot('P2')">P2</button>
-      <button class="slot-btn" onclick="showSubSlots('P2');selectSlot('P3')">P3</button>
-      <button class="slot-btn" onclick="showSubSlots('P3');selectSlot('P4')">P4</button>
-      <button class="slot-btn" onclick="showSubSlots('P4');selectSlot('P5')">P5</button>
-      <button class="slot-btn" onclick="showSubSlots('P5');selectSlot('P6')">P6</button>
+      <button class="slot-btn" onclick="showSubSlots('P2');selectSlot('P2')">P2</button>
+      <button class="slot-btn" onclick="showSubSlots('P3');selectSlot('P3')">P3</button>
+      <button class="slot-btn" onclick="showSubSlots('P4');selectSlot('P4')">P4</button>
+      <button class="slot-btn" onclick="showSubSlots('P5');selectSlot('P5')">P5</button>
     </div>
 
     <div id="subSlots" class="hidden mt-4">
       <h2 class="text-xl font-bold">Available Slots in <span id="selectedSlot"></span></h2>
       <div class="grid grid-cols-4 gap-4 mt-2">
+        <input type="hidden" name="subslot" id="selectedSlotInput">
         <script>
           for (let i = 1; i <= 20; i++) {
             document.write(`<button class="slot-number" onclick="showTimeSelection(${i});selectSubSlot(${i})">Slot ${i}</button>`);
           }
         </script>
+        <input type="hidden" name="subslot" id="selectedSubSlotInput">
       </div>
     </div>
 
@@ -88,7 +86,7 @@
       <input name= "time" type="time" id="startTime" class="text-black p-2 rounded" required>
       <button class="pay-btn mt-2" onclick="showPaymentOptions()">Proceed</button>
     </div>
-
+    </form>
     <div id="paymentOptions" class="hidden mt-4">
       <h2 class="text-xl font-bold">Payment Options</h2>
       <p class="text-gray-300">Choose a UPI App:</p>
@@ -98,7 +96,6 @@
         </a>
       </div>
     </div>
-  </form>
 
   </main>
 
@@ -177,4 +174,4 @@
   </style>
 
 </body>
-</html>
+</html>  
