@@ -7,7 +7,7 @@ def config():
     load_dotenv()
 
 
-def main(message):
+def main(mess):
     config()
     sid=os.getenv('SID')
     account_sid = sid
@@ -15,7 +15,7 @@ def main(message):
     auth_token = token
     client = Client(account_sid, auth_token)
 
-    message = client.messages.create(body=message,from_='+13525081703',to='+919578814692')
+    message = client.messages.create(body=mess,from_='+13525081703',to='+919578814692')
 
     print(message.sid)
 
