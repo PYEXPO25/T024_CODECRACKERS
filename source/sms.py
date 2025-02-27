@@ -7,7 +7,7 @@ def config():
     load_dotenv()
 
 
-def main(a,b,c):
+def main(message):
     config()
     sid=os.getenv('SID')
     account_sid = sid
@@ -15,7 +15,7 @@ def main(a,b,c):
     auth_token = token
     client = Client(account_sid, auth_token)
 
-    message = client.messages.create(body=f'Your have booked you parking on {a} slot {b} at Time:{c}',from_='+13525081703',to='+919578814692')
+    message = client.messages.create(body=message,from_='+13525081703',to='+919578814692')
 
     print(message.sid)
 

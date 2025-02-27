@@ -144,7 +144,9 @@ def book():
         slot = request.form['slot']
         subslot=request.form['subslot']
         time = request.form['time']
-        #main(slot,subslot,time)
+        mess=f'Your have booked you parking on {slot} slot {subslot} at Time:{time}'
+        print(mess)
+        #main(mess)
         con=conn.connection.cursor()
         query="INSERT INTO book(slot,subslot,book_time) VALUES (%s,%s,%s)"
         res=con.execute(query,(slot,subslot,time))
@@ -174,7 +176,9 @@ def fetch_alerts():
 
             # If booking is within the next 10 minutes, add to alerts
             if now.hour == booking_time.hour and (booking_time.minute - now.minute) <= 10:
-                alerts.append(f"🚨 ALERT: Slot {slot}, Subslot {subslot} starts at {start_time}!")
+                message=f"🚨 ALERT: Slot {slot}, Subslot {subslot} starts at {start_time}!"
+                alerts.append(message)
+                #main(message)
 
         conn.close()
     except Exception as err:
