@@ -144,7 +144,7 @@ def book():
         slot = request.form['slot']
         subslot=request.form['subslot']
         time = request.form['time']
-        main(slot,subslot,time)
+        #main(slot,subslot,time)
         con=conn.connection.cursor()
         query="INSERT INTO book(slot,subslot,book_time) VALUES (%s,%s,%s)"
         res=con.execute(query,(slot,subslot,time))

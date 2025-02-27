@@ -53,11 +53,13 @@
 
   <header class="bg-blue-600 p-4 text-center">
     <h1 class="text-2xl font-bold">Online Reservation - Select Your Slot</h1>
-    <h1 class="text-2xl font-bold">KMCH Hospital Mall</h1>
+    <h1 class="text-2xl font-bold">KMCH Hospital</h1>
   </header>
 
   <main class="container mx-auto p-4">
     <form action="{{ url_for('book') }}" method="POST">
+      <input type="hidden" name="slot" id="selectedSlotInput">
+        <input type="hidden" name="subslot" id="selectedSubSlotInput">
     <h2 class="text-xl font-bold mb-4">Choose Your Parking Slot</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <input type="hidden" name="slot" id="selectedSlotInput">
@@ -70,16 +72,30 @@
 
     <div id="subSlots" class="hidden mt-4">
       <h2 class="text-xl font-bold">Available Slots in <span id="selectedSlot"></span></h2>
-      <div class="grid grid-cols-4 gap-4 mt-2">
-        <input type="hidden" name="subslot" id="selectedSlotInput">
-        <script>
-          for (let i = 1; i <= 20; i++) {
-            document.write(`<button class="slot-number" onclick="showTimeSelection(${i});selectSubSlot(${i})">Slot ${i}</button>`);
-          }
-        </script>
-        <input type="hidden" name="subslot" id="selectedSubSlotInput">
+      <div id="slotsContainer" class="grid grid-cols-4 gap-4 mt-2">
       </div>
     </div>
+    
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const slotsContainer = document.getElementById("slotsContainer");
+    
+        for (let i = 1; i <= 20; i++) {
+            const button = document.createElement("button");
+            button.type = "button"; // Prevents form submission
+            button.className = "slot-number";
+            button.textContent = `Slot ${i}`;
+            button.onclick = function (event) {
+                event.preventDefault(); // Stops any default action
+                selectSubSlot(i);
+                showTimeSelection(i);
+            };
+            slotsContainer.appendChild(button);
+        }
+    });
+    
+    </script>
+    
 
     <div id="timeSelection" class="hidden mt-4">
       <h2 class="text-xl font-bold">Select Start Time</h2>
@@ -122,10 +138,12 @@
       console.log("Slot selected:", slot); // Debugging
     }
 
-    function selectSubSlot(slot) {
+    function selectSubSlot(subslot) {
       document.getElementById("selectedSubSlotInput").value = subslot; // Set input value
       console.log("SubSlot selected:", subslot); // Debugging
-    }
+  }
+  
+  
 
     function showPaymentOptions() {
       let startTime = document.getElementById('startTime').value;
