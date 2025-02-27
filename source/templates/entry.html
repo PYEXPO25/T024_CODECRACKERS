@@ -16,7 +16,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
-            background: rgba(255, 255, 255, 0.8); /* Light background for readability */
+            background: rgba(255, 255, 255, 0.8);
         }
         th, td {
             border: 1px solid black;
@@ -32,6 +32,15 @@
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
             text-align: center;
         }
+        .input-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .input-group input {
+            padding: 5px;
+        }
     </style>
 </head>
 <body>
@@ -39,85 +48,63 @@
     <div class="container">
         <h2>Car Entry & Exit Tracker</h2>
 
-        <label for="carNumber">Car Number:</label>
-        <input type="text" id="carNumber" placeholder="Enter car number">
-        <button onclick="registerEntry()">Entry</button>
-        <button onclick="registerExit()">Exit</button>
-
-        <label for="searchBox">Search:</label>
-        <input type="text" id="searchBox" onkeyup="searchCar()" placeholder="Search by car number">
+        <div class="input-group">
+            <form action="" method="post">
+                <label for="numplate">Car Number:</label>
+                <input type="text" name="numplate" placeholder="Enter car number" required>
+                <button type="submit" formaction="/entry">Entry</button>
+                <button type="submit" formaction="/exit">Exit</button>
+            </form>
+            <input type="text" id="searchBox" onkeyup="searchCar()" placeholder="Search by car number">
+        </div>
 
         <h3>Car Logs</h3>
         <table>
             <thead>
                 <tr>
-                    <th>Car Number</th>
                     <th>Entry Time</th>
                     <th>Exit Time</th>
+                    <th>Car Number</th>
                 </tr>
             </thead>
             <tbody id="logTableBody">
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.numplate }}</td>
+                    <td>{{ log.entry_time }}</td>
+                    <td>{{ log.exit_time if log.exit_time else 'N/A' }}</td>
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
 
     <script>
-        let carLogs = {}; 
-
-        function registerEntry() {
-            let carNumber = document.getElementById('carNumber').value;
-            if (carNumber === '') {
-                alert('Please enter a car number');
-                return;
-            }
-
-            let currentTime = new Date().toLocaleString();
-            carLogs[carNumber] = { entry: currentTime, exit: '' }; 
-            updateTable();
-        }
-
-        function registerExit() {
-            let carNumber = document.getElementById('carNumber').value;
-            if (carNumber === '' || !carLogs[carNumber]) {
-                alert('No entry found for this car');
-                return;
-            }
-
-            carLogs[carNumber].exit = new Date().toLocaleString();
-            updateTable();
-        }
-
-        function updateTable() {
-            let tableBody = document.getElementById('logTableBody');
-            tableBody.innerHTML = '';
-
-            for (let car in carLogs) {
-                let row = `<tr>
-                    <td>${car}</td>
-                    <td>${carLogs[car].entry}</td>
-                    <td>${carLogs[car].exit}</td>
-                </tr>`;
-                tableBody.innerHTML += row;
-            }
-        }
-
         function searchCar() {
             let filter = document.getElementById('searchBox').value.toLowerCase();
             let tableBody = document.getElementById('logTableBody');
-            tableBody.innerHTML = '';
-
-            for (let car in carLogs) {
-                if (car.toLowerCase().includes(filter)) {
-                    let row = `<tr>
-                        <td>${car}</td>
-                        <td>${carLogs[car].entry}</td>
-                        <td>${carLogs[car].exit}</td>
-                    </tr>`;
-                    tableBody.innerHTML += row;
+            let rows = tableBody.getElementsByTagName("tr");
+        
+            console.log("Search Function Triggered"); // Debugging line
+            console.log("Number of rows:", rows.length); // Check if rows are found
+        
+            for (let i = 0; i < rows.length; i++) {
+                let numplateCell = rows[i].getElementsByTagName("td")[0];
+        
+                if (numplateCell) {
+                    let numplate = numplateCell.textContent || numplateCell.innerText;
+                    console.log("Checking:", numplate); // Debugging line
+        
+                    if (numplate.toLowerCase().includes(filter)) {
+                        rows[i].style.display = "";
+                    } else {
+                        rows[i].style.display = "none";
+                    }
                 }
             }
         }
+        
+        
     </script>
-
 </body>
 </html>

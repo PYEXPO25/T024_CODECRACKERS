@@ -133,9 +133,31 @@ def qr():
     return render_template("qr.html")
 
 
-@app.route('/entry')
+@app.route('/entryexit')
+def entryexit():
+    con=conn.connection.cursor()
+    query="SELECT * FROM entryexit"
+    con.execute(query)
+    logs = con.fetchall()
+    return render_template('entry.html', logs=[{'numplate': log[0], 'entry_time': log[1], 'exit_time': log[2]} for log in logs])
+
+@app.route('/entry', methods=['POST'])
 def entry():
-    return render_template("entry.html")
+    numplate = request.form['numplate']
+    entry_time = datetime.now()
+    con=conn.connection.cursor()
+    con.execute("INSERT INTO entryexit (numplate, entry_time) VALUES (%s, %s)", (numplate, entry_time))
+    conn.connection.commit()
+    return redirect('/entryexit')
+
+@app.route('/exit', methods=['POST'])
+def exit():
+    numplate = request.form['numplate']
+    exit_time = datetime.now()
+    con=conn.connection.cursor()
+    con.execute("UPDATE entryexit SET exit_time = %s WHERE numplate = %s AND exit_time IS NULL", (exit_time, numplate))
+    conn.connection.commit()
+    return redirect('/entryexit')
 
 
 @app.route('/book',methods=['POST'])
