@@ -16,9 +16,11 @@ def RGB(event, x, y, flags, param):
 cv2.namedWindow('RGB')
 cv2.setMouseCallback('RGB', RGB)
 
-cap=cv2.VideoCapture('parking-2.mp4.mp4')
+cap=cv2.VideoCapture('parking1.mp4.mp4')
+file_path = "source\\backend\\coco.txt"
 
-my_file = open("T024_CODECRACKERS/source/static/assets/coco.txt", "r")
+
+my_file = open(file_path, "r")
 data = my_file.read()
 class_list = data.split("\n")
    
@@ -71,10 +73,10 @@ while True:
     frame=cv2.resize(frame,(1020,500))
 
     results=model.predict(frame)
- #   print(results)
+    print(results)
     a=results[0].boxes.data
     px=pd.DataFrame(a).astype("float")
-#    print(px)
+    print(px)
     
     list1=[]
     list2=[]
@@ -783,7 +785,7 @@ while True:
 
     if cv2.waitKey(0)&0xFF==27:
         break
-#cap.release()
+cap.release()
 #cv2.destroyAllWindows()
 #stream.stop()
 
